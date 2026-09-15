@@ -1,0 +1,48 @@
+# YTP2026H2 Hackathon Labs – License Summary
+
+This repository employs a dual-licensing structure based on content categories,
+consistent with the YTP teaching materials at https://github.com/tw-ytp/vocabuddy.
+
+## Educational Materials (CC BY-NC-SA 4.0)
+
+Text, diagrams, images, lab instructions, quiz questions, and all instructional
+content in this repository (except code) are licensed under the
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License.
+https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+You may reproduce and adapt these materials provided you give appropriate credit
+to YTP 少年圖靈計畫 (tw-ytp), provide a link to the license, indicate if changes
+were made, do not use them for commercial purposes, and distribute derivative
+works under the same license.
+
+## Software Code (MIT License)
+
+All executable code — including starter code, example solutions, HTML, CSS,
+JavaScript, Python, configuration files, and lab scaffolding — is licensed under
+the MIT License.
+
+Copyright (c) 2026 YTP 少年圖靈計畫 (tw-ytp)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+## Third-Party Materials
+
+Product names and trademarks mentioned (GitHub, Claude, OpenAI, Google, etc.)
+remain the property of their respective owners and are cited for instructional
+purposes only, implying no endorsement.
