@@ -21,4 +21,6 @@
 
 ## 授權
 
-（依主辦公告之教材授權條款，由助教於此填入 LICENSE）
+與 YTP 教材（github.com/tw-ytp/vocabuddy）一致，採雙軌授權，詳見 `LICENSE`：
+- 教材內容（文字、圖表、題目、Lab 說明）：**CC BY-NC-SA 4.0**
+- 程式碼（範例、起始碼、設定檔）：**MIT**
