@@ -28,23 +28,44 @@ PLAN｜Lab 3：例句生成 CLI——第一次讓程式呼叫 AI
     python tools/gen_example.py algorithm
 """
 import sys
+import json
 import anthropic
 
 MODEL = "claude-sonnet-5-5"   # 模型名稱會更新，最新值見教材附錄 B
+PROMPT = ("為英文單字「{word}」產生學習卡內容。只回傳 JSON，不要其他文字，不要 markdown 圍欄，"
+          '格式：{{"word": "...", "sentence": "...", "zh": "...", "tip": "..."}}。'
+          "sentence 用 CEFR B1 難度，且必須包含該單字。")
+FALLBACK = {"sentence": "Practice makes perfect.",
+            "zh": "熟能生巧。", "tip": "（預設內容：AI 暫時不可用）"}
 
 
-def main():
-    word = sys.argv[1] if len(sys.argv) > 1 else "interval"
-    client = anthropic.Anthropic()   # 自動讀取環境變數的 key
+def text_of(msg):
+    """取出回應中的文字區塊。新模型預設會先回 thinking 區塊，
+    直接拿 content[0].text 會失敗（見勘誤 E-009），所以依 type 挑文字。"""
+    return "".join(b.text for b in msg.content if b.type == "text")
+
+
+def ask(client, word):
     msg = client.messages.create(
-        model=MODEL,
-        max_tokens=300,
-        system="你是高中英語老師，例句使用 CEFR B1 難度。",
-        messages=[{"role": "user",
-                   "content": f"用單字 {word} 造一個例句，附中文翻譯與一個好記的聯想。"}],
+        model=MODEL, max_tokens=300,
+        system="你是高中英語老師。只輸出 JSON。",
+        messages=[{"role": "user", "content": PROMPT.format(word=word)}],
     )
-    print(msg.content[0].text)
+    return text_of(msg)
+
+
+def generate(word):
+    client = anthropic.Anthropic()
+    for attempt in range(2):              # 失敗最多重試一次
+        try:
+            data = json.loads(ask(client, word))
+            if word.lower() in data["sentence"].lower():
+                return data               # 驗證通過才放行
+        except (json.JSONDecodeError, KeyError, TypeError, anthropic.APIError):
+            pass
+    return {"word": word, **FALLBACK}     # 降階：永遠有東西可給
 
 
 if __name__ == "__main__":
-    main()
+    word = sys.argv[1] if len(sys.argv) > 1 else "interval"
+    print(json.dumps(generate(word), ensure_ascii=False, indent=2))
