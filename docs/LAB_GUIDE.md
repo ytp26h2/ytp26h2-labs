@@ -69,9 +69,9 @@
 ### Lab 3：例句生成 CLI 🔶
 
 - 產出：`labs/lab03-example-cli/`（`tools/gen_example.py`、`tools/requirements.txt`、`index.html`、`README.md`、`.gitignore`、`CHECKLIST.md`）
-- GitHub 紀錄：issue [#6](https://github.com/ytp26h2/ytp26h2-labs/issues/6) → PR（分支 `lab03/feature/example-cli`）
+- GitHub 紀錄：issue [#6](https://github.com/ytp26h2/ytp26h2-labs/issues/6) → PR [#7](https://github.com/ytp26h2/ytp26h2-labs/pull/7)（分支 `lab03/feature/example-cli`，由 `tw-ytp` 合併，merge commit `e6ae96b`）→ issue 自動關閉
 - 模型：`claude-sonnet-5-5`（主辦指定）。SDK：`anthropic` 1.x，需 Python 3.10+。
 - 已驗證（不需 key）：程式可編譯；斷網降階輸出罐頭、exit 0；v2 驗證／重試／降階邏輯以假回應測過五種情境；repo 內無金鑰。
-- 待 key：v1 兩個實驗（取樣、B1→C2）、v2 五個單字真實呼叫。金鑰放雲端環境設定的 `ANTHROPIC_API_KEY`，新 session 讀取後補做。
+- 待 key：v1 兩個實驗（取樣、B1→C2）、v2 五個單字真實呼叫、E-009 真實回應驗證。金鑰放雲端環境設定的 `ANTHROPIC_API_KEY`，新 session 讀取後補做。2026-10-13 第二個 session 讀不到該變數，補做未成，步驟與紀錄見 `CHECKLIST.md`「補做紀錄」。
 - 勘誤：E-007～E-010（見 `ERRATA.md`）。E-009 影響最大：教材 `content[0].text` 在新模型上會失敗。
-- 檢查點：`lab3-done` 由管理員在 PR 合併後建立。
+- 檢查點：`lab3-done` 已由管理員建立，指向 `main` 上的合併 commit `e6ae96b`。
