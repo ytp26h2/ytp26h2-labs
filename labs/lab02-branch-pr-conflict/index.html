@@ -38,6 +38,7 @@
 <div id="card">algorithm</div>
 <p id="hint">點卡片看中文，點「下一張」換單字</p>
 <button onclick="next()">下一張</button>
+<button onclick="quiz()">考我</button>
 <script>
 const WORDS = [
   ["algorithm","演算法"],["recursion","遞迴"],["vocabulary","字彙"],
@@ -49,6 +50,11 @@ const card = document.getElementById("card");
 card.onclick = () => { flipped = !flipped; render(); };
 function next(){ i = (i + 1) % WORDS.length; flipped = false; render(); }
 function render(){ card.textContent = WORDS[i][flipped ? 1 : 0]; }
+function quiz(){
+  let j;
+  do { j = Math.floor(Math.random() * WORDS.length); } while (j === i);
+  i = j; flipped = false; render();
+}
 </script>
 </body>
 </html>
