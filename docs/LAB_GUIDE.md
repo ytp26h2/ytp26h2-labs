@@ -31,7 +31,7 @@
 | # | Lab | 篇 | 摘要 | 教材時間 | tag | 本 repo 狀態 |
 |---|---|---|---|---|---|---|
 | 1 | [Lab 1：第一次提交](../labs/lab01-first-commit/) | 一・GitHub | 可翻面單字卡 `index.html`，init→add→commit→push，補 README 與 .gitignore | 40–60 分 | `lab1-done` | ✅ 完成（2026-10-13） |
-| 2 | Lab 2：分支、PR 與衝突 | 一・GitHub | issue→分支→PR→review→合併；「考我」按鈕；自導自演解一次衝突 | 60–90 分 | `lab2-done` | 待做 |
+| 2 | [Lab 2：分支、PR 與衝突](../labs/lab02-branch-pr-conflict/) | 一・GitHub | issue→分支→PR→review→合併；「考我」按鈕；自導自演解一次衝突 | 60–90 分 | `lab2-done` | ✅ 完成（2026-10-13） |
 | 3 | Lab 3：例句生成 CLI | 二・AI 與 LLM | Python 呼叫 Claude API，單字→例句＋翻譯＋聯想；v2 加 JSON、驗證、降階 | 60–90 分 | `lab3-done` | 待做 |
 | 4 | Lab 4：本地模型與切換（選修） | 附錄 E | Ollama 跑 Qwen；CLI 改「雲端優先、本地備援、罐頭墊底」 | 60–90 分 | `lab4-done` | 待做（選修） |
 | 5 | Sprint 1（Lab 5）：MVP 今日複習佇列 | 三・開發實戰 | 核心迴路 看卡→回想→翻面→自評→下一張；localStorage 紀錄 | 1 Sprint | `sprint1-done` | 待做 |
@@ -56,3 +56,12 @@
 - 檢查點：`lab1-done` 應指向 `main` 上的合併 commit `c7b512b`（PR ytp26h2/ytp26h2-labs#2 合併結果）。本 session 的 GitHub 憑證推不了 tag，依流程由 repo 管理員在 GitHub Releases 頁以 Target=`main` 建立 release 並同時建立 tag。
 - 適配：所有 Lab 集中於單一 repo，教材的 `git init`、建遠端、首次 push 以對照表呈現，不重做；自學者仍應照教材原步驟做。
 - 勘誤：E-001～E-004（見 `ERRATA.md`），皆為不周全而非錯誤。
+
+### Lab 2：分支、PR 與衝突 ✅
+
+- 產出：`labs/lab02-branch-pr-conflict/`（`index.html`、`README.md`、`.gitignore`、`CHECKLIST.md`）
+- GitHub 紀錄：issue [#3](https://github.com/ytp26h2/ytp26h2-labs/issues/3) → PR [#4](https://github.com/ytp26h2/ytp26h2-labs/pull/4)（含行內評論，由 `tw-ytp` 合併）→ 衝突合併 commit `5403879` → Lab 2 收尾 PR
+- 分支：`lab02/feature/quiz-button`（已合併並刪除）、`lab02/rename`（衝突演練用，合併後刪除）
+- 適配：本 repo 的 `main` 只接受 PR，衝突演練以工作分支扮演教材的 `main`，結果再經 PR 進 `main`。
+- 勘誤：E-005、E-006（見 `ERRATA.md`）。
+- 檢查點：`lab2-done` 由管理員在收尾 PR 合併後，以 Target=`main` 建立 release 並同時建立 tag。
