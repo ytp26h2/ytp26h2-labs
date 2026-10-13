@@ -53,5 +53,6 @@
 
 - 產出：`labs/lab01-first-commit/`（`index.html`、`README.md`、`.gitignore`、`CHECKLIST.md`）
 - 兩個 commit：`lab01: feat: 首頁骨架與可翻面單字卡`、`lab01: docs: README 與 gitignore`
+- 檢查點：`lab1-done` 指向 commit `3e12935`（分支 `claude/gallant-tesla-1yfec7`）。本 session 的 GitHub 憑證只允許推送指定分支，tag 需由 repo 管理員建立：GitHub 頁面 Releases → Draft a new release → Choose a tag 輸入 `lab1-done`、Target 選該 commit，或本機執行 `git tag lab1-done 3e12935 && git push origin lab1-done`。
 - 適配：所有 Lab 集中於單一 repo，教材的 `git init`、建遠端、首次 push 以對照表呈現，不重做；自學者仍應照教材原步驟做。
 - 勘誤：E-001～E-004（見 `ERRATA.md`），皆為不周全而非錯誤。
