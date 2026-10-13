@@ -32,7 +32,7 @@
 |---|---|---|---|---|---|---|
 | 1 | [Lab 1：第一次提交](../labs/lab01-first-commit/) | 一・GitHub | 可翻面單字卡 `index.html`，init→add→commit→push，補 README 與 .gitignore | 40–60 分 | `lab1-done` | ✅ 完成（2026-10-13） |
 | 2 | [Lab 2：分支、PR 與衝突](../labs/lab02-branch-pr-conflict/) | 一・GitHub | issue→分支→PR→review→合併；「考我」按鈕；自導自演解一次衝突 | 60–90 分 | `lab2-done` | ✅ 完成（2026-10-13） |
-| 3 | [Lab 3：例句生成 CLI](../labs/lab03-example-cli/) | 二・AI 與 LLM | Python 呼叫 Claude API，單字→例句＋翻譯＋聯想；v2 加 JSON、驗證、降階 | 60–90 分 | `lab3-done` | 🔶 程式與文件完成，真實呼叫待 API key |
+| 3 | [Lab 3：例句生成 CLI](../labs/lab03-example-cli/) | 二・AI 與 LLM | Python 呼叫 Claude API，單字→例句＋翻譯＋聯想；v2 加 JSON、驗證、降階 | 60–90 分 | `lab3-done` | ✅ 完成（2026-10-13 真實呼叫補驗） |
 | 4 | Lab 4：本地模型與切換（選修） | 附錄 E | Ollama 跑 Qwen；CLI 改「雲端優先、本地備援、罐頭墊底」 | 60–90 分 | `lab4-done` | 待做（選修） |
 | 5 | Sprint 1（Lab 5）：MVP 今日複習佇列 | 三・開發實戰 | 核心迴路 看卡→回想→翻面→自評→下一張；localStorage 紀錄 | 1 Sprint | `sprint1-done` | 待做 |
 | 6 | Sprint 2（Lab 6）：AI 例句上卡片 | 三・開發實戰 | fetch 直呼 API、Structured Output、BYOK＋快取 | 1 Sprint | `sprint2-done` | 待做 |
@@ -66,12 +66,13 @@
 - 勘誤：E-005、E-006（見 `ERRATA.md`）。
 - 檢查點：`lab2-done` 由管理員在收尾 PR 合併後，以 Target=`main` 建立 release 並同時建立 tag。
 
-### Lab 3：例句生成 CLI 🔶
+### Lab 3：例句生成 CLI ✅
 
 - 產出：`labs/lab03-example-cli/`（`tools/gen_example.py`、`tools/requirements.txt`、`index.html`、`README.md`、`.gitignore`、`CHECKLIST.md`）
-- GitHub 紀錄：issue [#6](https://github.com/ytp26h2/ytp26h2-labs/issues/6) → PR（分支 `lab03/feature/example-cli`）
+- GitHub 紀錄：issue [#6](https://github.com/ytp26h2/ytp26h2-labs/issues/6) → PR [#7](https://github.com/ytp26h2/ytp26h2-labs/pull/7)（分支 `lab03/feature/example-cli`，由 `tw-ytp` 合併）→ 補驗 PR [#9](https://github.com/ytp26h2/ytp26h2-labs/pull/9)（分支 `claude/modest-franklin-f68v6j`，文件補驗＋v2 `max_tokens` 改 1024）。兩個實驗的輸出與心得在 issue #6 留言。
 - 模型：`claude-sonnet-5-5`（主辦指定）。SDK：`anthropic` 1.x，需 Python 3.10+。
 - 已驗證（不需 key）：程式可編譯；斷網降階輸出罐頭、exit 0；v2 驗證／重試／降階邏輯以假回應測過五種情境；repo 內無金鑰。
-- 待 key：v1 兩個實驗（取樣、B1→C2）、v2 五個單字真實呼叫。金鑰放雲端環境設定的 `ANTHROPIC_API_KEY`，新 session 讀取後補做。
-- 勘誤：E-007～E-010（見 `ERRATA.md`）。E-009 影響最大：教材 `content[0].text` 在新模型上會失敗。
-- 檢查點：`lab3-done` 由管理員在 PR 合併後建立。
+- 已驗證（真實呼叫，2026-10-13）：v1 兩個實驗（取樣、B1→C2）、v2 五個單字全部合法 JSON 且含單字、E-009 實證。金鑰放雲端環境變數 `YTP_ANTHROPIC_API_KEY`，只在執行指令內以 `ANTHROPIC_API_KEY="$YTP_ANTHROPIC_API_KEY"` 傳入，不 export、不印出。
+- 真實呼叫才發現：教材 v1 原碼在新模型上**兩關都過不了**，先是 `content[0].text` 噴 `AttributeError`（E-009），修好後 `max_tokens=300` 又被 thinking 吃光、輸出空白（E-011）。
+- 勘誤：E-007～E-011（見 `ERRATA.md`）。E-009、E-011 影響最大：學生照抄教材 v1 第一步就卡住。
+- 檢查點：`lab3-done` 已由管理員建立，指向 PR #7 的合併 commit `e6ae96b`。

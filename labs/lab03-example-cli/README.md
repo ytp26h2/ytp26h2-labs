@@ -43,7 +43,7 @@ YTP2026H2 主辦（助教範本）。全程透過 Claude 在瀏覽器中完成�
 | 1 環境與金鑰 | `pip install anthropic`、`export ANTHROPIC_API_KEY` | 裝到 SDK 1.13.0。雲端環境沒有 key，金鑰由主辦放進環境設定（不貼對話）。 |
 | 2 開任務、開分支 | issue「AI 例句生成 CLI」（假設 #2）、`feature/example-cli`、`mkdir tools` | issue [#6](https://github.com/ytp26h2/ytp26h2-labs/issues/6)、分支 `lab03/feature/example-cli`（從 `main` 開）、`labs/lab03-example-cli/tools/`。 |
 | 3 v1 | `tools/gen_example.py` 自由文字 | 照教材原碼，`MODEL` 改為 `claude-sonnet-5-5`。commit `lab03: feat: 例句生成 CLI v1`。 |
-| 4 兩個實驗 | 同字跑兩次；B1 改 C2 | ⏳ 需 key，到位後補做並把心得留在 issue #6。 |
+| 4 兩個實驗 | 同字跑兩次；B1 改 C2 | 2026-10-13 key 到位後補做。教材原碼 v1 真實呼叫時先噴 `AttributeError`（E-009），修好後輸出空白（E-011），改 `text_of()` 並把 `max_tokens` 提到 2000 才跑成。輸出與心得在 issue [#6](https://github.com/ytp26h2/ytp26h2-labs/issues/6)，實測表在 `CHECKLIST.md`。 |
 | 5 v2 | JSON＋驗證＋降階 | 照教材架構，三處小改（見下）。commit 訊息含 `closes #6`。 |
 | 6 走完 GitHub Flow | commit → push → PR → review → merge → 本地同步 | PR 三段描述；自我 review 行內評論；由管理員 `tw-ytp` 合併。 |
 
@@ -52,6 +52,8 @@ YTP2026H2 主辦（助教範本）。全程透過 Claude 在瀏覽器中完成�
 1. **`text_of()` 依 type 取文字區塊**。新一代模型預設會先回一個 `thinking` 區塊，教材的 `msg.content[0].text` 會拿到非文字區塊而失敗。改為把所有 `type == "text"` 的區塊接起來。（勘誤 E-009）
 2. **prompt 多一句「不要 markdown 圍欄」**。教材急救表自己也建議這麼做，直接放進 prompt。
 3. **`except` 多接 `TypeError`**。模型若回 JSON 陣列或字串，`data["sentence"]` 丟的是 `TypeError` 不是 `KeyError`，教材原碼會噴 traceback。
+
+另一個真實呼叫後才發現的問題：**v1 的 `max_tokens=300` 太小**（勘誤 E-011）。新模型的 thinking token 也算在 `max_tokens` 裡，v1 的自由文字 prompt 會讓 300 幾乎全被 thinking 用掉，印出來是空白。v2 只回 JSON（約 150～180 tokens）、實測八次都沒觸發 thinking，300 當下夠用；但主辦決定本 repo 的 v2 仍改為 `max_tokens=1024` 留餘裕（補驗 PR），自己改 v1 來做實驗時請提到 2000。
 
 ## 怎麼在沒有網路時測降階（教材驗收第 4 項）
 
@@ -81,5 +83,6 @@ ANTHROPIC_API_KEY=sk-ant-dummy ANTHROPIC_BASE_URL=http://127.0.0.1:9 python tool
 | JSON 常常解析失敗 | prompt 再強調「只輸出 JSON、不要 markdown 圍欄」。第三篇教更穩的 Structured Output。 |
 | 中文變成 `\uXXXX` | 印出時用 `ensure_ascii=False`（v2 已含）。 |
 | （補充）`TypeError: Could not resolve authentication method` | 完全沒設 key。SDK 1.x 在 `anthropic.Anthropic()` 就會丟這個，不是 401。設好環境變數再跑。 |
-| （補充）`AttributeError: 'ThinkingBlock' object has no attribute 'text'` | 用了教材的 `content[0].text`，而模型先回了 thinking 區塊。改用本 Lab 的 `text_of()`。 |
+| （補充）`AttributeError: 'ThinkingBlock' object has no attribute 'text'` | 用了教材的 `content[0].text`，而模型先回了 thinking 區塊。改用本 Lab 的 `text_of()`。2026-10-13 真實呼叫實證：教材 v1 原碼三次都中。 |
+| （補充）v1 印出空白、或 v2 每次都是罐頭 | `max_tokens=300` 被 thinking 區塊吃光，`msg.stop_reason` 會是 `"max_tokens"`。v1 把 `max_tokens` 提到 2000；v2 提到 1024（本 repo 已改）。見勘誤 E-011。 |
 | （補充）pip 說找不到符合 Python 版本的 anthropic 1.x | Python 低於 3.10。升級 Python，或接受 pip 退回 0.x 舊版（教材寫法仍可用）。 |
