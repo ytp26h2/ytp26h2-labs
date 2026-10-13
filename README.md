@@ -13,7 +13,10 @@
 
 | Lab | 主題 | 狀態 |
 |-----|------|------|
-| lab01 | （助教填寫） | 準備中 |
+| [lab01](labs/lab01-first-commit/) | 第一次提交：可翻面單字卡上 GitHub | ✅ 完成 |
+| lab02–lab14 | 見 [`docs/LAB_GUIDE.md`](docs/LAB_GUIDE.md) | 準備中 |
+
+總指引：[`docs/LAB_GUIDE.md`](docs/LAB_GUIDE.md)｜教材勘誤：[`docs/ERRATA.md`](docs/ERRATA.md)
 
 ## 更新
 
