@@ -53,7 +53,7 @@ YTP2026H2 主辦（助教範本）。全程透過 Claude 在瀏覽器中完成�
 2. **prompt 多一句「不要 markdown 圍欄」**。教材急救表自己也建議這麼做，直接放進 prompt。
 3. **`except` 多接 `TypeError`**。模型若回 JSON 陣列或字串，`data["sentence"]` 丟的是 `TypeError` 不是 `KeyError`，教材原碼會噴 traceback。
 
-另一個真實呼叫後才發現的問題：**v1 的 `max_tokens=300` 太小**（勘誤 E-011）。新模型的 thinking token 也算在 `max_tokens` 裡，v1 的自由文字 prompt 會讓 300 幾乎全被 thinking 用掉，印出來是空白。v2 只回 JSON（約 150～180 tokens）、實測八次都沒觸發 thinking，所以 300 目前夠用，本 repo 的 v2 程式維持教材原值；自己改 v1 來做實驗時請把 `max_tokens` 提到 2000。
+另一個真實呼叫後才發現的問題：**v1 的 `max_tokens=300` 太小**（勘誤 E-011）。新模型的 thinking token 也算在 `max_tokens` 裡，v1 的自由文字 prompt 會讓 300 幾乎全被 thinking 用掉，印出來是空白。v2 只回 JSON（約 150～180 tokens）、實測八次都沒觸發 thinking，300 當下夠用；但主辦決定本 repo 的 v2 仍改為 `max_tokens=1024` 留餘裕（補驗 PR），自己改 v1 來做實驗時請提到 2000。
 
 ## 怎麼在沒有網路時測降階（教材驗收第 4 項）
 
@@ -84,5 +84,5 @@ ANTHROPIC_API_KEY=sk-ant-dummy ANTHROPIC_BASE_URL=http://127.0.0.1:9 python tool
 | 中文變成 `\uXXXX` | 印出時用 `ensure_ascii=False`（v2 已含）。 |
 | （補充）`TypeError: Could not resolve authentication method` | 完全沒設 key。SDK 1.x 在 `anthropic.Anthropic()` 就會丟這個，不是 401。設好環境變數再跑。 |
 | （補充）`AttributeError: 'ThinkingBlock' object has no attribute 'text'` | 用了教材的 `content[0].text`，而模型先回了 thinking 區塊。改用本 Lab 的 `text_of()`。2026-10-13 真實呼叫實證：教材 v1 原碼三次都中。 |
-| （補充）v1 印出空白、或 v2 每次都是罐頭 | `max_tokens=300` 被 thinking 區塊吃光，`msg.stop_reason` 會是 `"max_tokens"`。v1 把 `max_tokens` 提到 2000；v2 提到 1024。見勘誤 E-011。 |
+| （補充）v1 印出空白、或 v2 每次都是罐頭 | `max_tokens=300` 被 thinking 區塊吃光，`msg.stop_reason` 會是 `"max_tokens"`。v1 把 `max_tokens` 提到 2000；v2 提到 1024（本 repo 已改）。見勘誤 E-011。 |
 | （補充）pip 說找不到符合 Python 版本的 anthropic 1.x | Python 低於 3.10。升級 Python，或接受 pip 退回 0.x 舊版（教材寫法仍可用）。 |

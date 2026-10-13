@@ -69,7 +69,7 @@
 ### Lab 3：例句生成 CLI ✅
 
 - 產出：`labs/lab03-example-cli/`（`tools/gen_example.py`、`tools/requirements.txt`、`index.html`、`README.md`、`.gitignore`、`CHECKLIST.md`）
-- GitHub 紀錄：issue [#6](https://github.com/ytp26h2/ytp26h2-labs/issues/6) → PR [#7](https://github.com/ytp26h2/ytp26h2-labs/pull/7)（分支 `lab03/feature/example-cli`，由 `tw-ytp` 合併）→ 補驗 PR（分支 `claude/modest-franklin-f68v6j`，只改文件）。兩個實驗的輸出與心得在 issue #6 留言。
+- GitHub 紀錄：issue [#6](https://github.com/ytp26h2/ytp26h2-labs/issues/6) → PR [#7](https://github.com/ytp26h2/ytp26h2-labs/pull/7)（分支 `lab03/feature/example-cli`，由 `tw-ytp` 合併）→ 補驗 PR [#9](https://github.com/ytp26h2/ytp26h2-labs/pull/9)（分支 `claude/modest-franklin-f68v6j`，文件補驗＋v2 `max_tokens` 改 1024）。兩個實驗的輸出與心得在 issue #6 留言。
 - 模型：`claude-sonnet-5-5`（主辦指定）。SDK：`anthropic` 1.x，需 Python 3.10+。
 - 已驗證（不需 key）：程式可編譯；斷網降階輸出罐頭、exit 0；v2 驗證／重試／降階邏輯以假回應測過五種情境；repo 內無金鑰。
 - 已驗證（真實呼叫，2026-10-13）：v1 兩個實驗（取樣、B1→C2）、v2 五個單字全部合法 JSON 且含單字、E-009 實證。金鑰放雲端環境變數 `YTP_ANTHROPIC_API_KEY`，只在執行指令內以 `ANTHROPIC_API_KEY="$YTP_ANTHROPIC_API_KEY"` 傳入，不 export、不印出。

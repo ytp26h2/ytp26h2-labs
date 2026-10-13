@@ -28,7 +28,7 @@
 
 1. **v1 跑 `algorithm` 兩次（取樣）**：兩段完整輸出已貼 issue [#6](https://github.com/ytp26h2/ytp26h2-labs/issues/6)。兩次例句句子一模一樣（`The app uses an algorithm to choose videos that you might like.`），但標題層級、音標寫法、聯想的鋪陳、詞源補充的措辭都不同；輸出長度一次 561、一次 716 tokens。心得：取樣讓每個 token 都有機率變化，約束越強的部分（B1、要含 algorithm、要簡單）最可能的句子就越容易重複，約束弱的部分（版面、聯想）差異最明顯；所以「同字兩次不同」要看整段輸出，不能只盯例句那一句。
 2. **v1 把 B1 改 C2**：例句從一句 13 個字的簡單句，變成 30 個字、含 `ostensible`、`inadvertently`、`perpetuated`、`purportedly` 的長句，模型還自動加了「C2 重點詞」與常見搭配兩節；輸出 1025 tokens。心得寫在 issue [#6](https://github.com/ytp26h2/ytp26h2-labs/issues/6)。
-3. **v2 五個字**（現行程式、`max_tokens=300` 不變），全部合法 JSON、含單字、exit 0：
+3. **v2 五個字**（驗收時為 `max_tokens=300` 的現行程式），全部合法 JSON、含單字、exit 0。驗收後主辦決定把 v2 改為 `max_tokens=1024`（E-011），改完再跑 `recursion` 一次：合法 JSON、含單字、exit 0；斷網降階測試重跑仍輸出罐頭、exit 0。
    - algorithm：`The app uses a smart algorithm to suggest songs that you might like.`
    - recursion：`In my computer class, we learned that recursion means a function calls itself to solve a smaller part of the same problem.`
    - vocabulary：`Reading English books every day helps me build a larger vocabulary.`
@@ -48,4 +48,4 @@
 | v1 + `thinking={"type": "between_tools"}` | `['text']` | `['text']` | — | `max_tokens`／`end_turn` | 同上，關掉 thinking 不夠，`max_tokens` 本身太小。 |
 | v1 + `max_tokens=2000`（本次實驗用） | `['thinking', 'text']` | `['thinking', 'text']` | `['thinking', 'text']` | 三次都 `end_turn` | 561／716／1025 tokens，正常完成。**這是 v1 的正確修法：`text_of()` ＋ 放大 `max_tokens`。** |
 
-結論：E-009 由「待真實呼叫驗證」改為「已驗證」；另立 E-011（`max_tokens=300` 對 v1 太小）。兩者都是「高」嚴重度，因為學生照教材 v1 一行不改，第一步就會卡住。
+結論：E-009 由「待真實呼叫驗證」改為「已驗證」；另立 E-011（`max_tokens=300` 對 v1 太小）。兩者都是「高」嚴重度，因為學生照教材 v1 一行不改，第一步就會卡住。本 repo 的 v2 依主辦決定改為 `max_tokens=1024`；`zh` 欄位語意不穩的問題留給 Sprint 2。

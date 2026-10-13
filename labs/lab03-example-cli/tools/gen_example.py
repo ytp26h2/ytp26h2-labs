@@ -47,7 +47,7 @@ def text_of(msg):
 
 def ask(client, word):
     msg = client.messages.create(
-        model=MODEL, max_tokens=300,
+        model=MODEL, max_tokens=1024,   # 教材原值 300，thinking token 也算在內，見勘誤 E-011
         system="你是高中英語老師。只輸出 JSON。",
         messages=[{"role": "user", "content": PROMPT.format(word=word)}],
     )
