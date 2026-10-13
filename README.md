@@ -15,7 +15,8 @@
 |-----|------|------|
 | [lab01](labs/lab01-first-commit/) | 第一次提交：可翻面單字卡上 GitHub | ✅ 完成 |
 | [lab02](labs/lab02-branch-pr-conflict/) | 分支、PR 與衝突：考我按鈕、自導自演解衝突 | ✅ 完成 |
-| lab03–lab14 | 見 [`docs/LAB_GUIDE.md`](docs/LAB_GUIDE.md) | 準備中 |
+| [lab03](labs/lab03-example-cli/) | 例句生成 CLI：Python 呼叫 Claude API，JSON＋驗證＋降階 | 🔶 待 API key 補驗 |
+| lab04–lab14 | 見 [`docs/LAB_GUIDE.md`](docs/LAB_GUIDE.md) | 準備中 |
 
 總指引：[`docs/LAB_GUIDE.md`](docs/LAB_GUIDE.md)｜教材勘誤：[`docs/ERRATA.md`](docs/ERRATA.md)
 
