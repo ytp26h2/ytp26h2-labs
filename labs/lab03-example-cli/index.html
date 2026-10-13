@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YTP VocaBuddy</title>
+<style>
+  body{font-family:system-ui,sans-serif;background:#f4f6f5;margin:0;padding:24px;text-align:center}
+  h1{color:#0f766e}
+  #card{max-width:340px;margin:32px auto;padding:40px 24px;background:#fff;border-radius:14px;
+        box-shadow:0 4px 16px rgba(0,0,0,.08);font-size:2rem;cursor:pointer;user-select:none}
+  #hint{color:#888;font-size:.9rem}
+  button{margin-top:16px;padding:10px 22px;font-size:1rem;border:none;border-radius:8px;
+         background:#0f766e;color:#fff;cursor:pointer}
+</style>
+</head>
+<body>
+<h1>YTP VocaBuddy Pro 2.0 背單字夥伴</h1>
+<div id="card">algorithm</div>
+<p id="hint">點卡片看中文，點「下一張」換單字</p>
+<button onclick="next()">下一張</button>
+<button onclick="quiz()">考我</button>
+<script>
+const WORDS = [
+  ["algorithm","演算法"],["recursion","遞迴"],["vocabulary","字彙"],
+  ["memorize","背誦"],["efficient","有效率的"],["persist","堅持；持續"],
+  ["retrieve","取回；檢索"],["interval","間隔"]
+];
+let i = 0, flipped = false;
+const card = document.getElementById("card");
+card.onclick = () => { flipped = !flipped; render(); };
+function next(){ i = (i + 1) % WORDS.length; flipped = false; render(); }
+function render(){ card.textContent = WORDS[i][flipped ? 1 : 0]; }
+function quiz(){
+  let j;
+  do { j = Math.floor(Math.random() * WORDS.length); } while (j === i);
+  i = j; flipped = false; render();
+}
+</script>
+</body>
+</html>
