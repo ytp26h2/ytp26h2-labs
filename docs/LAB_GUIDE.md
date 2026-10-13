@@ -75,4 +75,4 @@
 - 已驗證（真實呼叫，2026-10-13）：v1 兩個實驗（取樣、B1→C2）、v2 五個單字全部合法 JSON 且含單字、E-009 實證。金鑰放雲端環境變數 `YTP_ANTHROPIC_API_KEY`，只在執行指令內以 `ANTHROPIC_API_KEY="$YTP_ANTHROPIC_API_KEY"` 傳入，不 export、不印出。
 - 真實呼叫才發現：教材 v1 原碼在新模型上**兩關都過不了**，先是 `content[0].text` 噴 `AttributeError`（E-009），修好後 `max_tokens=300` 又被 thinking 吃光、輸出空白（E-011）。
 - 勘誤：E-007～E-011（見 `ERRATA.md`）。E-009、E-011 影響最大：學生照抄教材 v1 第一步就卡住。
-- 檢查點：`lab3-done` 已由管理員建立，指向 PR #7 的合併 commit `e6ae96b`。
+- 檢查點：`lab3-done` 由管理員以 Release 建立；PR #9 合併後依 issue [#10](https://github.com/ytp26h2/ytp26h2-labs/issues/10) 在 GitHub 網頁刪除重建，現指向 PR #9 的合併 commit `64c4601`，涵蓋補驗內容。

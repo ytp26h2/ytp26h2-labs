@@ -10,7 +10,7 @@
 | 2 | v1 能對任意單字輸出例句；能說出同字兩次結果不同的原因 | ✅ | **教材原碼 v1 在真實呼叫時不能用**：第一次就噴 `AttributeError: 'ThinkingBlock' object has no attribute 'text'`（E-009 實證）；改用 `text_of()` 後輸出變成**空白**，因為 `max_tokens=300` 全被 thinking 區塊吃掉（新勘誤 E-011）。把 `max_tokens` 提到 2000 後 `algorithm` 兩次都成功，兩段輸出與心得貼在 issue [#6](https://github.com/ytp26h2/ytp26h2-labs/issues/6)。原因：模型每次是依機率分布**取樣**下一個 token，不是查表，所以同一個 prompt 會得到不同內容（教材 2.4）；本次兩段的例句句子恰好相同，差異出現在版面、聯想與補充，見下方「補做紀錄」第 1 項的討論。 |
 | 3 | v2 對 5 個不同單字都回傳合法 JSON，且例句都真的含目標單字 | ✅ | `algorithm`、`recursion`、`vocabulary`、`persist`、`interval` 五個字各跑一次，全部 exit 0、輸出合法 JSON、四個欄位齊全、`sentence` 都含目標單字（大小寫不敏感），沒有一次走到罐頭。五句例句見下方「補做紀錄」第 3 項。驗證邏輯另以假回應離線測過五種情境（見下表）。 |
 | 4 | 關掉網路再跑 v2，程式不噴 traceback，而是輸出罐頭內容 | ✅ | 以假 key 加不可達的 `ANTHROPIC_BASE_URL=http://127.0.0.1:9` 執行 `python tools/gen_example.py algorithm`：輸出罐頭 JSON（sentence「Practice makes perfect.」），exit code 0，無 traceback，耗時約 4 秒（SDK 內建重試 2 次 × 程式重試 1 次）。 |
-| 5 | PR 已合併、issue 自動關閉、本地 main 已同步 | ✅ | PR [#7](https://github.com/ytp26h2/ytp26h2-labs/pull/7) 由管理員 `tw-ytp` 於 2026-10-13 合併（merge commit `e6ae96b`）；issue [#6](https://github.com/ytp26h2/ytp26h2-labs/issues/6) 由 `closes #6` 自動關閉（GitHub 顯示 closed by PR #7，state_reason=completed）；本地 `main` 與 `origin/main` 皆為 `e6ae96b`；tag `lab3-done` 已指向同一 commit。 |
+| 5 | PR 已合併、issue 自動關閉、本地 main 已同步 | ✅ | PR [#7](https://github.com/ytp26h2/ytp26h2-labs/pull/7) 由管理員 `tw-ytp` 於 2026-10-13 合併（merge commit `e6ae96b`）；issue [#6](https://github.com/ytp26h2/ytp26h2-labs/issues/6) 由 `closes #6` 自動關閉（GitHub 顯示 closed by PR #7，state_reason=completed）；本地 `main` 與 `origin/main` 皆為 `e6ae96b`；tag `lab3-done` 當時指向同一 commit，補驗 PR [#9](https://github.com/ytp26h2/ytp26h2-labs/pull/9) 合併後由管理員重建為指向 `64c4601`。 |
 
 ## 離線單元測試：v2 的驗證／重試／降階（把 `ask()` 換成假回應）
 
