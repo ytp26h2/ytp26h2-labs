@@ -43,7 +43,7 @@
 | 11 | [Lab 11：開工準備](../labs/lab11-agentic-setup/) | 五・AI-Native | 裝代理式編碼工具、三個驗證問題、逐步確認模式、第一次小改動 | 30 分 | `lab11-done` | ✅ 完成（2026-10-14） |
 | 12 | [Lab 12：讓 AI 認識專案](../labs/lab12-project-instructions/) | 五・AI-Native | 60 行內專案指示檔（CLAUDE.md），對照實驗驗證，走完整 PR | 40 分 | `lab12-done` | ✅ 完成（2026-10-14） |
 | 13 | [Lab 13：第一個技能](../labs/lab13-skill-add-words/) | 五・AI-Native | 「新增單字」流程包成 SKILL.md，正反驗證觸發 | 45 分 | `lab13-done` | ✅ 完成（2026-10-14） |
-| 14 | Lab 14：子代理 review | 五・AI-Native | 唯讀 code-reviewer 子代理對真實 PR 跑一次，比較機器審 vs 人審 | 35 分 | `lab14-done` | 待做 |
+| 14 | [Lab 14：子代理 review](../labs/lab14-subagent-review/) | 五・AI-Native | 唯讀 code-reviewer 子代理對真實 PR 跑一次，比較機器審 vs 人審 | 35 分 | `lab14-done` | ✅ 完成（2026-10-14） |
 
 共 14 個 Lab：13 個主線＋1 個選修（Lab 4）。各篇另有自我檢測（quiz），不列為 Lab。
 
@@ -165,4 +165,35 @@
 - 適配：步驟 1「問工具技能放哪」以全新 `claude -p` session 問出 `.claude/skills/<name>/SKILL.md`；正面測試用 `--allowedTools` 限定讀檔、改檔、`node check_words.js`、`git add`／`git commit`（不含 push）的全新 session，`stream-json` 錄下每個工具呼叫；負面測試只放行讀取工具。
 - 已驗證：正面測試自動 `Skill add-words` → 讀格式 → 加在最後 → `check_words.js` 24 字 → 只 commit `words.js` → 沒有 push；負面測試只 `Grep`／`Read`，沒載入技能。發現第 5 條「看 LAB_GUIDE 最新 ✅ 列」在 Lab 進行中會指到上一個 Lab（它填了 `lab12:`），改為取分支名前綴。
 - 勘誤：無新增。
-- 檢查點：`lab13-done` 由管理員在 PR 合併後以 Release 建立（Target=`main`）。
+- 檢查點：`lab13-done` 已由管理員以 Release 建立，指向 PR #40 的合併 commit `33f7db3`。
+
+### Lab 14：子代理 review ✅
+
+- 產出：`.claude/agents/code-reviewer.md`（`tools: Read, Grep, Glob`、`permissionMode: plan`，四面向與嚴格輸出格式）；`labs/lab14-subagent-review/`（README、CHECKLIST 含四格比較表）；依它的建議修正技能第 4、5 條、`words.js` 註解、Lab 13 文件。
+- GitHub 紀錄：issue [#41](https://github.com/ytp26h2/ytp26h2-labs/issues/41) → PR（分支 `lab14/feature/code-reviewer`；commit：feat 子代理、fix 採納建議、docs）；四格比較表寫在該 PR 留言；merge 由主辦按。
+- 適配：審查對象改為已合併的 `lab12-done..lab13-done`（教材前置「沒合併的 PR」與 Lab 13 驗收矛盾，E-030）；人審由主辦做（未發現問題）；子代理在全新 `claude -p` session 裡由主對話委派，stream-json 區分主對話與子代理的工具呼叫。
+- 已驗證：兩次實跑子代理全程只用 Glob／Read／Grep；第一次誠實宣告沒有 Bash 看不到 diff（E-032），第二次由主對話把 diff 交給它，回報 6 則含行號；主對話只收到報告。四格：兩邊都抓到 0、只有它 7（全採納）、只有人 0、它抓錯 1 加 1 則流程偏好差異。修正後重跑 Lab 13 正面測試通過。
+- 勘誤：E-030、E-031（5.8「git grep sk- 一無所獲」會命中教材自己的假 key 範例）、E-032。
+- 檢查點：`lab14-done` 由管理員在 PR 合併後以 Release 建立（Target=`main`）。
+
+## 第五篇完賽：5.8 證據地圖（十七項，在本 repo 哪裡看得到）
+
+| # | 證據 | 本 repo 的位置 |
+|---|---|---|
+| 1 | commit 歷史連續、訊息符合「類型: 說明」 | `git log --oneline`：全部 `labNN: 類型: 說明`，從 Lab 1 到 Lab 14 |
+| 2 | 有分支、已合併的 PR、PR 有描述與 review 留言 | Pull requests（Closed）：#2～#40，每個 Lab 至少一個；自我 review 見 #32，比較留言見 Lab 14 PR |
+| 3 | issue 被 PR 自動關閉過 | Issues（Closed）：#30 由 #32、#37 由 #38、#39 由 #40 自動關閉 |
+| 4 | 解過真實衝突 | Lab 2 的衝突演練合併 commit（`labs/lab02-branch-pr-conflict/CHECKLIST.md`） |
+| 5 | 呼叫模型的功能有驗證、有降階 | `labs/lab03-example-cli/tools/gen_example.py`；`labs/lab10-graduation/index.html` 的 `aiExample()`／`smartQuiz()` try/catch 與友善訊息 |
+| 6 | 歷史裡沒有金鑰 | `git grep 'sk-ant-'` 只命中說明文字與假 key `sk-ant-dummy`（E-031）；Lab 9 安檢紀錄 |
+| 7 | 純函式＋單元測試 | `srs.js`／`test_srs.js`、`csv.js`／`test_csv.js` |
+| 8 | 資料檢查腳本擋得住壞資料 | `check_words.js`（Lab 8 CHECKLIST 的重複字實測） |
+| 9 | 打得開的公開網址 | `labs/lab10-graduation/README.md` 首屏 Live Demo |
+| 10 | CI 會跑且綠 | Actions 分頁；根 README 與 Lab 9／10 README 徽章 |
+| 11 | 里程碑 tag 齊全 | Tags：`lab1-done`～`lab3-done`、`sprint1-done`～`sprint4-done`、`v1.0`、`v1.1`、`lab11-done`～`lab14-done` |
+| 12 | README 有定位句、網址、截圖、架構 | `labs/lab10-graduation/README.md` |
+| 13 | 專案指示檔，每條都認同 | `/CLAUDE.md`（Lab 12 逐條確認） |
+| 14 | 技能，description 寫「什麼時候用」 | `.claude/skills/add-words/SKILL.md` |
+| 15 | 子代理，權限有限制 | `.claude/agents/code-reviewer.md`（`tools: Read, Grep, Glob`） |
+| 16 | 「機器審 vs 人審」比較留言 | Lab 14 PR 的留言；副本 `labs/lab14-subagent-review/CHECKLIST.md` |
+| 17 | 能對任何一行說出它在做什麼 | 每個 Lab 的 PLAN 註解、PR 自我 review、CHECKLIST 證據；Demo 逐字稿 `labs/lab10-graduation/DEMO.md` |

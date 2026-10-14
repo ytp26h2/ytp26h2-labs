@@ -13,8 +13,8 @@ const WORDS = [
   // 演算法主題單字（Lab 11 第一次小改動）
   {en:"loop", zh:"迴圈"},           {en:"variable", zh:"變數"},
   {en:"debug", zh:"除錯"},
-  // 天氣主題單字
-  {en:"thunderstorm", zh:"雷雨"},     {en:"drizzle", zh:"毛毛雨"},
+  // 天氣主題單字（Lab 13 add-words 技能正面測試產物，分支 lab13/feature/skill-add-words）
+  {en:"thunderstorm", zh:"雷雨"},   {en:"drizzle", zh:"毛毛雨"},
   {en:"humid", zh:"潮濕的"}
 ];
 if (typeof module !== "undefined") module.exports = WORDS;
