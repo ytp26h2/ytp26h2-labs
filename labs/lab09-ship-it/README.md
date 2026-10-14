@@ -39,11 +39,11 @@ YTP2026H2 主辦（助教範本）。全程透過 Claude 在瀏覽器中完成�
 | 教材步驟 | 教材要你做 | 本 repo 實際發生的事 |
 |---|---|---|
 | 安檢，然後轉公開 | `git grep sk-`、翻 `git log`；repo 改 Public | repo 是公開範本，本來就 Public。`git grep sk-` 只命中說明文字與 Lab 3 README 的假 key `sk-ant-dummy`，`git grep 'sk-ant-'` 無真金鑰；`git log` 全程金鑰只從環境變數傳入。 |
-| 開啟 GitHub Pages | Settings → Pages → Deploy from a branch，main／(root) | 由管理員在 Settings 操作。根目錄的 README.md 會被 Jekyll 渲染成首頁，App 在 `labs/lab09-ship-it/` 子路徑。 |
+| 開啟 GitHub Pages | Settings → Pages → Deploy from a branch，main／(root) | 由管理員在 Settings 操作。**組織 repo 多一步**：教材假設個人 repo；本 repo 屬組織 `ytp26h2`，Settings → Pages 起初顯示「Pages on this repository are disabled. Please contact your organization administrators」，要先由組織 Owner 到 Organization Settings → Member privileges → Pages creation 勾選 Public，repo 的 Pages 設定才會出現。根目錄的 README.md 會被 Jekyll 渲染成首頁，App 在 `labs/lab09-ship-it/` 子路徑。 |
 | PWA 化 | issue、分支 `feature/ship-it`、manifest、sw.js、icon、`<head>` 與 script 各兩行 | issue [#25](https://github.com/ytp26h2/ytp26h2-labs/issues/25)；分支 `lab09/feature/ship-it`；檔案照教材。 |
 | 加上 CI | `.github/workflows/ci.yml` 照抄 | 放在 repo 根目錄，加 `working-directory` 適配。 |
 | PR、觀察機器人上工 | 開 PR，看 CI 轉綠再 merge | PR 開出時 CI 立即跑，`8c7ac83` 兩次 run 皆綠。 |
-| 手機安裝實測 | 加入主畫面、飛航模式 | 由管理員在裝置上做；本環境以無頭 Chromium 的離線模式驗證 service worker。 |
+| 手機安裝實測 | 加入主畫面、飛航模式 | 管理員 2026-10-14 真機通過（加入主畫面為全螢幕、飛航模式仍可複習）；本環境以無頭 Chromium 的離線模式驗證 service worker。 |
 | tag v1.0 | `git tag v1.0 && git push --tags` | 由管理員以 Release 建立。 |
 
 ## 驗收清單
@@ -67,6 +67,7 @@ YTP2026H2 主辦（助教範本）。全程透過 Claude 在瀏覽器中完成�
 | 症狀 | 原因與解法 |
 |---|---|
 | 網址 404 | Pages 要一兩分鐘生效；確認分支選對、repo 已 public、檔名是 index.html。本 repo 的 App 在 `labs/lab09-ship-it/` 子路徑，根網址是 README。 |
+| Settings → Pages 顯示 disabled、要你聯絡組織管理員 | 組織層級關了 Pages creation。組織 Owner 到 Organization Settings → Member privileges → Pages creation 勾 Public；個人 repo 不會遇到。 |
 | 網站開了但改版沒生效 | service worker 的舊快取。把 `sw.js` 的 CACHE 改成 v2 再 push。 |
 | CI 沒有跑 | 路徑錯了。必須是 `.github/workflows/ci.yml`。 |
 | CI 紅在 setup 步驟 | YAML 縮排錯位。 |

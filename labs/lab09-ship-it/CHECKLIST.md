@@ -5,11 +5,11 @@
 
 | # | 教材驗收項目 | 結果 | 證據 |
 |---|---|---|---|
-| 1 | 公開網址在別人的裝置上打得開、能完整複習一輪 | ⏳ | 需管理員開啟 Pages（Deploy from a branch，main／root）並在裝置上開 <https://ytp26h2.github.io/ytp26h2-labs/labs/lab09-ship-it/>。 |
-| 2 | 手機已安裝到主畫面，開啟為全螢幕獨立視窗 | ⏳ | 需管理員在手機上做。本環境已驗 manifest 可讀、`display: standalone`、icon.png 為 PNG。 |
-| 3 | 飛航模式下 App 照常開啟與複習（AI 例句顯示快取或友善訊息） | ⏳（本環境已模擬通過） | 無頭 Chromium 以 `http://localhost` 載入後 `set_offline(True)` 重新載入：頁面由 service worker 供應，18 張卡、可翻面自評；AI 例句快取命中秒回「An algorithm is a recipe.…」，未快取的字顯示友善訊息。真機飛航模式由管理員確認後改 ✅。 |
+| 1 | 公開網址在別人的裝置上打得開、能完整複習一輪 | ✅ | 管理員 2026-10-14 回報：Pages 設 Deploy from a branch（main／root）後，手機開 <https://ytp26h2.github.io/ytp26h2-labs/labs/lab09-ship-it/> 可完整複習一輪。前置：組織 repo 的 Pages 預設被鎖，需先在 Organization Settings → Member privileges → Pages creation 開啟（見 README「適配」）。本環境連不到 github.io，以管理員回報為準。 |
+| 2 | 手機已安裝到主畫面，開啟為全螢幕獨立視窗 | ✅ | 管理員 2026-10-14 回報：瀏覽器選單「加入主畫面」後從圖示開啟，為全螢幕獨立視窗、無網址列。本環境已驗 manifest 可讀、`display: standalone`、icon.png 為 PNG。 |
+| 3 | 飛航模式下 App 照常開啟與複習（AI 例句顯示快取或友善訊息） | ✅ | 無頭 Chromium 以 `http://localhost` 載入後 `set_offline(True)` 重新載入：頁面由 service worker 供應，18 張卡、可翻面自評；AI 例句快取命中秒回「An algorithm is a recipe.…」，未快取的字顯示友善訊息。管理員 2026-10-14 真機飛航模式回報通過：從圖示開啟仍能複習，AI 例句顯示快取或友善訊息。 |
 | 4 | PR 頁面看得到 CI 綠勾；故意推一個會掛測試的 commit，親眼看它變紅（然後修好） | ✅ | PR [#26](https://github.com/ytp26h2/ytp26h2-labs/pull/26)。feat commit `8c7ac83` 綠：[run 38507787516](https://github.com/ytp26h2/ytp26h2-labs/actions/runs/38507787516)（push）、[run 38507906867](https://github.com/ytp26h2/ytp26h2-labs/actions/runs/38507906867)（pull_request）。故意改壞 `INTERVALS[4]` 的 `88da7ae` 紅：[run 38507944693](https://github.com/ytp26h2/ytp26h2-labs/actions/runs/38507944693)、[run 38507950961](https://github.com/ytp26h2/ytp26h2-labs/actions/runs/38507950961)，`AssertionError: Expected values to be strictly deep-equal`。修正 `9517cdc` 綠：[run 38508001671](https://github.com/ytp26h2/ytp26h2-labs/actions/runs/38508001671)、[run 38508006543](https://github.com/ytp26h2/ytp26h2-labs/actions/runs/38508006543)，4 tests passed。 |
-| 5 | tag `v1.0` 已推上，README 掛上 CI 徽章 | ⏳ | 徽章已掛在本 README 與根目錄 README；tag 由管理員以 Release 建立，合併後補記。 |
+| 5 | tag `v1.0` 已推上，README 掛上 CI 徽章 | ⏳ | 徽章已掛在本 README 與根目錄 README。tag：管理員回報已建 `v1.0`，但 2026-10-14 查 Releases 與 tags 皆未見（API 回 404，疑為 Draft 未 Publish）；Release 公開後補記 commit。 |
 
 ## PWA 驗證明細（11 項全過）
 
