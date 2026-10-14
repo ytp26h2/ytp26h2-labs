@@ -127,4 +127,4 @@
 - 組織 repo 的 Pages 卡關：教材假設個人 repo，直接 Settings → Pages 即可；組織 repo 的 Pages 預設關閉，Settings → Pages 只顯示「disabled, contact your organization administrators」。解法是組織 Owner 先到 Organization Settings → Member privileges → Pages creation 勾 Public，再回 repo 設 Deploy from a branch（main／root）。接手者若換到新組織，先做這步。
 - 已驗證：CI 綠→紅→綠（Actions run 連結在 CHECKLIST）；本地 `http://localhost` 無頭 Chromium：manifest、service worker 註冊與快取、離線複習與 AI 例句快取 11 項全過；安檢清單過。
 - 勘誤：E-023（`file://` 下 service worker 註冊丟錯，中）、E-024（`on: [push, pull_request]` 跑兩次，低）、E-025（SHELL 未列 icon.png，低）；E-006 加 Lab 9 的 `closes #8`。
-- 檢查點：`v1.0` 由管理員以 Release 建立（Target=`main`）；2026-10-14 管理員回報已建，但 GitHub 尚未見到此 tag（疑 Draft 未 Publish），公開後補記指向的 commit。
+- 檢查點：`v1.0` 已由管理員以 Release 建立，指向 PR #26 的合併 commit `004c8bd`。注意 Release 存成 Draft 時不會建 tag，要按 Publish release 才會出現。
