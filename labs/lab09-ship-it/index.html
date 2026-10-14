@@ -1,0 +1,233 @@
+<!--
+  PLAN｜Lab 9：上線三連發——部署、PWA、CI
+  教材：https://tw-ytp.github.io/vocabuddy/#/lab9（v2.0，2026-09-08），內容照 4.1～4.4
+  確認日期：2026-10-14（由 YTP 主辦確認後執行）
+  起點：Lab 8 成果複製到 labs/lab09-ship-it/
+
+   1. 建立本資料夾：複製 Lab 8 的 index.html、words.js、srs.js、test_srs.js、check_words.js、.gitignore。
+   2. 安檢（4.4）：git grep sk-（只命中說明文字與 Lab 3 的假 key）、翻 git log；repo 已是 Public。
+   3. 開 issue「上線三連發」→ #25；從 main 開分支 lab09/feature/ship-it。
+   4. PWA（4.2）：manifest.json、sw.js 照教材；icon.png 512×512 以 Python 產生；
+      index.html <head> 加 manifest 與 theme-color 兩行，script 末尾註冊 service worker。
+   5. CI（4.3）：repo 根目錄 .github/workflows/ci.yml 照教材，加 working-directory 指到本資料夾。
+      commit「lab09: feat: PWA 與 CI，closes #25」。
+   6. 驗收（本環境）：node 兩支測試；本地 http://localhost 開頁，無頭 Chromium 確認 manifest、
+      service worker 註冊與快取、離線重新載入可複習、AI 例句離線快取命中／友善訊息；Lab 6～8 回歸。
+   7. PR → main；故意推一個把 INTERVALS 改壞的 commit 看 CI 變紅，再推修正看它轉綠（教材驗收第 4 項）。
+   8. 需管理員：Settings → Pages 開 Deploy from a branch（main／root）；手機裝到主畫面、飛航模式實測；
+      合併後建 Release 與 tag v1.0。公開網址 https://ytp26h2.github.io/ytp26h2-labs/labs/lab09-ship-it/
+   9. 文件：README（含 CI 徽章）、CHECKLIST.md、docs/LAB_GUIDE.md、根目錄 README（CI 徽章）、ERRATA。
+  適配：App 在子目錄，Pages 根由 README 渲染；CI 以 working-directory 適配；手機實測由主辦在裝置上做。
+  勘誤候選：ci.yml on: [push, pull_request] 同一 PR 每次 push 跑兩次；sw.js SHELL 未列 icon.png；
+           收工 closes #8 寫死（E-006）。
+-->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YTP VocaBuddy</title>
+<style>
+  body{font-family:system-ui,sans-serif;background:#f4f6f5;margin:0;padding:24px;text-align:center}
+  h1{color:#0f766e}
+  #stats{color:#666;font-size:.95rem}
+  #card{max-width:340px;margin:24px auto 8px;padding:36px 24px;background:#fff;border-radius:14px;
+        box-shadow:0 4px 16px rgba(0,0,0,.08);font-size:2rem;user-select:none}
+  #meaning{color:#0f766e;font-size:1.2rem;min-height:1.6em}
+  button{margin:8px 6px 0;padding:10px 22px;font-size:1rem;border:none;border-radius:8px;
+         background:#0f766e;color:#fff;cursor:pointer}
+  button.warn{background:#b3403a}
+</style>
+</head>
+<body>
+<h1>YTP VocaBuddy</h1>
+<p id="stats"></p>
+<div id="card">—</div>
+<p id="meaning">&nbsp;</p>
+<p id="ai" style="max-width:340px;margin:8px auto;color:#555"></p>
+<div>
+  <button id="reveal" onclick="reveal()">顯示答案</button>
+  <button id="ok" onclick="mark(true)" hidden>記得 ✓</button>
+  <button id="no" onclick="mark(false)" class="warn" hidden>忘了 ✗</button>
+  <button id="aiBtn" onclick="aiExample()" hidden>AI 例句</button>
+</div>
+<div style="margin-top:20px">
+  <button onclick="smartQuiz()">考我弱點</button>
+  <div id="quiz" style="max-width:340px;margin:8px auto;color:#333"></div>
+</div>
+<script src="words.js"></script>
+<script src="srs.js"></script>
+<script>
+// 單字包已搬到 words.js（Sprint 4：全隊共編，進 Git）
+
+// 學習紀錄：只屬於這台裝置，所以放 localStorage（讀寫都包 try/catch）
+let log = {};
+try { log = JSON.parse(localStorage.getItem("vb-log")) || {}; } catch(e){}
+function save(){ try { localStorage.setItem("vb-log", JSON.stringify(log)); } catch(e){} }
+
+// —— 日期：以「第幾天」為單位，附時間旅行測試器 ——
+let dayOffset = 0;
+try { dayOffset = +localStorage.getItem("vb-day") || 0; } catch(e){}
+const today = () => Math.floor(Date.now() / 864e5) + dayOffset;
+window.vbTravel = n => {            // Console 輸入 vbTravel(1) 即快轉一天
+  try { localStorage.setItem("vb-day", dayOffset + n); } catch(e){}
+  location.reload();
+};
+
+function stateOf(w){
+  const s = log[w.en] || (log[w.en] = { seen:0, wrong:0 });
+  if (s.box === undefined){ s.box = 1; s.due = today(); }   // 舊紀錄自動升級
+  return s;
+}
+
+let queue = WORDS.filter(w => stateOf(w).due <= today());   // 只複習「到期」的卡
+let cur = null;
+
+const $ = id => document.getElementById(id);
+
+function next(){
+  $("aiBtn").hidden = true;          // Sprint 2：換卡時藏回 AI 鈕、清空例句
+  $("ai").textContent = "";
+  if (queue.length === 0){
+    $("card").textContent = "今天沒有到期的卡——明天見！";
+    $("meaning").innerHTML = "&nbsp;";
+    $("reveal").hidden = $("ok").hidden = $("no").hidden = true;
+    return;
+  }
+  cur = queue[0];
+  $("card").textContent = cur.en;
+  $("meaning").innerHTML = "&nbsp;";
+  $("reveal").hidden = false;
+  $("ok").hidden = $("no").hidden = true;
+  stats();
+}
+
+function reveal(){
+  $("meaning").textContent = cur.zh;
+  $("reveal").hidden = true;
+  $("ok").hidden = $("no").hidden = false;
+  $("aiBtn").hidden = false;         // Sprint 2：翻面後才給 AI 例句
+}
+
+function mark(ok){
+  const s = stateOf(cur);
+  s.seen++; if (!ok) s.wrong++;
+  const r = schedule(s.box, ok, today());   // ← 排程交給純函式
+  s.box = r.box; s.due = r.due;
+  save();
+  if (ok) queue.shift();
+  else queue.push(queue.shift());   // 忘了的排到今天隊尾，等一下再考一次
+  next();
+}
+
+function stats(){
+  $("stats").textContent = "今日佇列：剩 " + queue.length + " 張";
+}
+
+// ---------- Sprint 2：AI 例句（fetch 直呼 API、使用者自帶金鑰、快取、降階） ----------
+const MODEL = "claude-sonnet-5-5";   // 教材 claude-sonnet-4-5 已非當前世代（勘誤 E-007）；最新名稱見附錄 B
+const API_VERSION = "2023-06-01";    // anthropic-version 標頭值，見附錄 B
+
+function getKey(){
+  let k = null;
+  try { k = localStorage.getItem("vb-key"); } catch(e){}
+  if (!k){
+    k = prompt("貼上你的 API key（只存在你自己的瀏覽器）");
+    try { localStorage.setItem("vb-key", k); } catch(e){}
+  }
+  return k;
+}
+
+// 回應的 content 是「區塊列表」，新模型可能先回 thinking 區塊，依 type 只挑 text（勘誤 E-009）
+const textOf = data => data.content.filter(b => b.type === "text").map(b => b.text).join("");
+
+// Sprint 4：把 Sprint 2 的 fetch 抽成共用函式（教材只說「抽成共用函式」未給程式，由本 repo 補；
+// 內容與 Lab 6 原碼相同，含四處新模型修改：MODEL E-007、無 temperature E-014、textOf E-009、max_tokens E-011）
+async function callClaude(system, user){
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      "x-api-key": getKey(),
+      "anthropic-version": API_VERSION,
+      "anthropic-dangerous-direct-browser-access": "true"  // 瀏覽器直呼必加，見附錄 B
+    },
+    body: JSON.stringify({
+      model: MODEL, max_tokens: 1024,   // 教材 300；thinking 的 token 也算在內（勘誤 E-011）
+      // 教材有 temperature: 0.3；claude-sonnet-5-5 不接受 temperature，會回 400（勘誤 E-014）
+      system: system,
+      messages: [{ role: "user", content: user }]
+    })
+  });
+  const data = await res.json();
+  return textOf(data);                              // 教材：data.content[0].text（勘誤 E-009）
+}
+
+async function aiExample(){
+  const word = cur.en, box = $("ai");
+  let cache = {};
+  try { cache = JSON.parse(localStorage.getItem("vb-ai")) || {}; } catch(e){}
+  if (cache[word]) return show(cache[word]);        // 快取命中：不花錢、離線可用
+  box.textContent = "生成中…";
+  try {
+    const c = JSON.parse(await callClaude(          // Sprint 4：fetch 抽成共用函式 callClaude()
+      '你是高中英語老師。只輸出 JSON：{"sentence":"...","zh":"...","tip":"..."}，不要 markdown 圍欄',
+      "用單字 " + word + " 造一個 CEFR B1 例句、中譯與聯想"));
+    if (!c.sentence.toLowerCase().includes(word.toLowerCase()))
+      throw new Error("例句沒包含目標單字");
+    cache[word] = c;
+    try { localStorage.setItem("vb-ai", JSON.stringify(cache)); } catch(e){}
+    show(c);
+  } catch (e) {
+    box.textContent = "AI 暫時不可用——不影響複習，例句之後再補。";
+  }
+  function show(c){
+    box.innerHTML = "<em>" + c.sentence + "</em><br>" + c.zh + "<br>聯想：" + c.tip;
+  }
+}
+
+// ---------- Sprint 4：弱點檢索（RAG-lite）與智慧出題 ----------
+function weakest(k){
+  return WORDS
+    .map(w => { const s = log[w.en] || {seen:0, wrong:0};
+                return { en: w.en, zh: w.zh, rate: s.wrong / (s.seen || 1) }; })
+    .sort((a, b) => b.rate - a.rate)
+    .slice(0, k);
+}
+
+async function smartQuiz(){
+  const t = weakest(3);
+  const box = $("quiz");
+  box.textContent = "出題中…";
+  try {
+    const text = await callClaude(                       // 把 Sprint 2 的 fetch 抽成共用函式
+      '你是出題老師。只輸出 JSON：{"question":"...","options":["..","..","..",".."],' +
+      '"answer":"..","why":".."}。question 是含 ____ 的英文克漏字句。不要 markdown 圍欄。',
+      "使用者最常錯的單字：" + t.map(w => w.en + "（" + w.zh + "）").join("、") +
+      "。從中挑一個出一題四選一，選項要包含正確答案與三個貼近的干擾項。");
+    const q = JSON.parse(text);
+    if (!Array.isArray(q.options) || q.options.length !== 4 ||
+        !q.options.includes(q.answer)) throw new Error("題目格式不合格");
+    box.innerHTML = "<p>" + q.question + "</p>";
+    q.options.forEach(op => {
+      const b = document.createElement("button");
+      b.textContent = op;
+      b.onclick = () => {
+        const ok = op === q.answer;
+        const s = log[q.answer] || (log[q.answer] = {seen:0, wrong:0});
+        s.seen++; if (!ok) s.wrong++;                     // 答題結果寫回紀錄：閉環
+        save();
+        box.innerHTML += ok ? "<p>答對！" + q.why + "</p>"
+                            : "<p>正解：" + q.answer + "。" + q.why + "</p>";
+      };
+      box.appendChild(b);
+    });
+  } catch (e) {
+    box.textContent = "AI 暫時不可用，先用單字卡複習吧。";
+  }
+}
+
+next();
+</script>
+</body>
+</html>
