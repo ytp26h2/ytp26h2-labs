@@ -37,7 +37,7 @@
 | 5 | [Sprint 1（Lab 5）：MVP 今日複習佇列](../labs/lab05-sprint1-mvp-review-queue/) | 三・開發實戰 | 核心迴路 看卡→回想→翻面→自評→下一張；localStorage 紀錄 | 1 Sprint | `sprint1-done` | ✅ 完成（2026-10-14） |
 | 6 | [Sprint 2（Lab 6）：AI 例句上卡片](../labs/lab06-sprint2-ai-example/) | 三・開發實戰 | fetch 直呼 API、Structured Output、BYOK＋快取 | 1 Sprint | `sprint2-done` | ✅ 完成（2026-10-14） |
 | 7 | [Sprint 3（Lab 7）：SRS 排程演算法](../labs/lab07-sprint3-srs/) | 三・開發實戰 | 遺忘曲線、Leitner 盒、`srs.js` 純函式＋單元測試、時間旅行 | 1 Sprint | `sprint3-done` | ✅ 完成（2026-10-14） |
-| 8 | Sprint 4（Lab 8）：智慧出題與共編 | 三・開發實戰 | 弱點分析、RAG-lite 出題、`words.js`／`check_words.js` 單字包 PR 共編 | 1 Sprint | `sprint4-done` | 待做 |
+| 8 | [Sprint 4（Lab 8）：智慧出題與共編](../labs/lab08-sprint4-smart-quiz/) | 三・開發實戰 | 弱點分析、RAG-lite 出題、`words.js`／`check_words.js` 單字包 PR 共編 | 1 Sprint | `sprint4-done` | ✅ 完成（2026-10-14） |
 | 9 | Lab 9：上線三連發 | 四・上線與發表 | GitHub Pages、PWA、GitHub Actions CI | 60–90 分 | `v1.0` | 待做 |
 | 10 | Lab 10：發表與畢業 | 四・上線與發表 | 作品級 README、3 分鐘 Demo、畢業挑戰 | 90 分＋ | `v1.0` | 待做 |
 | 11 | Lab 11：開工準備 | 五・AI-Native | 裝代理式編碼工具、三個驗證問題、逐步確認模式、第一次小改動 | 30 分 | `lab11-done` | 待做 |
@@ -109,3 +109,12 @@
 - 已驗證：`node test_srs.js` 四條全過；`INTERVALS` 逐格改壞，盒 3 那格抓不到；無頭 Chromium 時間旅行 46 天 21 項全過（到期篩選、間隔 2→4→8→16、頂級不再升、答錯回盒 1、舊紀錄升級）；Lab 6 回歸 17 項全過。
 - 勘誤：E-017（時間旅行敘述與驗收第 3 項與程式不符，中）、E-018（測試未覆蓋盒 3，中）、E-019（`today()` 為 UTC 日，低）；E-006 加 Sprint 3 的 `closes #6`。E-012 本輪仍未修。
 - 檢查點：`sprint3-done` 已由管理員以 Release 建立，指向 PR #19 的合併 commit `6cb6a37`。
+
+### Lab 8（Sprint 4）：智慧出題與多人共編 ✅
+
+- 產出：`labs/lab08-sprint4-smart-quiz/`（`words.js`、`check_words.js`、`srs.js`、`test_srs.js`、`index.html`、`README.md`、`.gitignore`、`CHECKLIST.md`）
+- GitHub 紀錄：issue [#21](https://github.com/ytp26h2/ytp26h2-labs/issues/21) → PR（分支 `lab08/feature/smart-quiz`，從 `main` 開；commit：chore 起點、feat 出題與共編、docs）→ 單字包 PR（分支 `lab08/feature/words-animals`，同一作者換 reviewer 帽子留 review）
+- 教材程式照抄，唯一自己寫的是 `callClaude(system, user)`（教材未給，E-022），由 Lab 6 的 fetch 原樣抽出。
+- 已驗證：`check_words.js` 正反測試；攔截層 15 項（弱字排序與 prompt、題目顯示、答題寫回、三種不合格格式不出題、斷網）；curl 重放與 Chromium 端到端真實出題 200；Lab 6、Lab 7 回歸全過。
+- 勘誤：E-020（`innerHTML` 插入題目，中）、E-021（`log[q.answer]` 以模型字串為鍵，中）、E-022（`callClaude` 缺程式，低）；E-006 加 Sprint 4 的 `closes #7`。
+- 檢查點：`sprint4-done` 由管理員在單字包 PR 合併後以 Target=`main` 建立 Release；第三篇完賽。
