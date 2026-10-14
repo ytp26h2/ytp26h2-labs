@@ -41,7 +41,7 @@
 | 9 | [Lab 9：上線三連發](../labs/lab09-ship-it/) | 四・上線與發表 | GitHub Pages、PWA、GitHub Actions CI | 60–90 分 | `v1.0` | ✅ 完成（2026-10-14；Pages 與手機實測由管理員通過） |
 | 10 | [Lab 10：發表與畢業](../labs/lab10-graduation/) | 四・上線與發表 | 作品級 README、3 分鐘 Demo、畢業挑戰（CSV 匯入） | 90 分＋ | `v1.1` | ✅ 完成（2026-10-14；排練與真機實測由管理員通過） |
 | 11 | [Lab 11：開工準備](../labs/lab11-agentic-setup/) | 五・AI-Native | 裝代理式編碼工具、三個驗證問題、逐步確認模式、第一次小改動 | 30 分 | `lab11-done` | ✅ 完成（2026-10-14） |
-| 12 | Lab 12：讓 AI 認識專案 | 五・AI-Native | 60 行內專案指示檔（CLAUDE.md），對照實驗驗證，走完整 PR | 40 分 | `lab12-done` | 待做 |
+| 12 | [Lab 12：讓 AI 認識專案](../labs/lab12-project-instructions/) | 五・AI-Native | 60 行內專案指示檔（CLAUDE.md），對照實驗驗證，走完整 PR | 40 分 | `lab12-done` | ✅ 完成（2026-10-14） |
 | 13 | Lab 13：第一個技能 | 五・AI-Native | 「新增單字」流程包成 SKILL.md，正反驗證觸發 | 45 分 | `lab13-done` | 待做 |
 | 14 | Lab 14：子代理 review | 五・AI-Native | 唯讀 code-reviewer 子代理對真實 PR 跑一次，比較機器審 vs 人審 | 35 分 | `lab14-done` | 待做 |
 
@@ -146,4 +146,14 @@
 - 適配：工具就是本 Claude Code 網頁 session（容器內 CLI 2.1.299、Node 22、模型 `claude-fable-5-1`），「安裝」以記錄版本與認證狀態替代；工作目錄＝repo 根，三個驗證問題只根據倉庫檔案回答並附檔名行號；逐步確認：app 端切換未生效（`get_session` 仍回 `auto`），改以明確提問在改檔前、commit 前各取得主辦同意；第 3 題答兩處（Lab 1 起始碼 8 字、現行 App `words.js` 18 字）。
 - 已驗證：教材五項全過；小改動以 `git diff`、`git status`、`check_words.js`、無頭 Chromium 複習到新字為證，主辦看過才 commit。
 - 勘誤：E-027（第 3 題答案「8 個單字」只對 Lab 1 狀態成立，做完 Sprint 4 的學生單字在 `words.js`；「按『下一張』」的按鈕 Sprint 1 後已不存在）。
-- 檢查點：`lab11-done` 由管理員在 PR 合併後以 Release 建立（Target=`main`）。
+- 檢查點：`lab11-done` 已由管理員以 Release 建立，指向 PR #36 的合併 commit `144e4f4`。
+
+### Lab 12：讓 AI 認識專案 ✅
+
+- 產出：repo 根目錄 `CLAUDE.md`（36 行，五段 25 條，慣例從現有程式碼觀察）；`labs/lab12-project-instructions/`（README、CHECKLIST）；對照實驗產物 `shuffleWords()` 純函式與 `vbShuffle()` Console 輔助進 `labs/lab10-graduation/index.html`。
+- GitHub 紀錄：issue [#37](https://github.com/ytp26h2/ytp26h2-labs/issues/37) → PR（分支 `lab12/feature/project-instructions`；commit：docs CLAUDE.md、feat 實驗產物、docs 文件）；主辦逐條確認草稿、逐行 review PR。
+- 適配：「清空工作階段」以容器內 `claude -p` 全新非互動 session 替代，新 session 只印程式碼、由本 session 貼入；只放 Claude Code 一套，README 說明 AGENTS.md 橋接法。
+- 對照實驗：同一句話在沒有與有 `CLAUDE.md` 的全新 session 各跑一次。實驗組自動寫出 `// 用途：…` 並引用 CLAUDE.md 的純函式慣例，對照組沒有——指示檔生效。發現教材建議的辨識規矩「加一行繁中註解」在滿是中文註解的 repo 分不出來（E-029）。
+- 已驗證：`wc -l` 36；三支測試過；無頭 Chromium 預設順序不變、`shuffleWords` 純函式、`vbShuffle()` 五次皆重排；回歸失敗項全為 18 字的舊假設。
+- 勘誤：E-028（5.4 範例「用瀏覽器直接開 index.html」在 Lab 9 之後要改 http 伺服器）、E-029（辨識規矩要選模型照抄現狀也不會自然做到的事）。
+- 檢查點：`lab12-done` 由管理員在 PR 合併後以 Release 建立（Target=`main`）。
