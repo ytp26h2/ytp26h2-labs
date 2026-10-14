@@ -26,6 +26,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f766e">
 <title>YTP VocaBuddy</title>
 <style>
   body{font-family:system-ui,sans-serif;background:#f4f6f5;margin:0;padding:24px;text-align:center}
@@ -228,6 +230,9 @@ async function smartQuiz(){
 }
 
 next();
+
+// script 最末尾：註冊 service worker（Lab 9 PWA）
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
 </script>
 </body>
 </html>
