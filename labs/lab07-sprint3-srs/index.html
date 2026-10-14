@@ -52,6 +52,7 @@
   <button id="no" onclick="mark(false)" class="warn" hidden>忘了 ✗</button>
   <button id="aiBtn" onclick="aiExample()" hidden>AI 例句</button>
 </div>
+<script src="srs.js"></script>
 <script>
 const WORDS = [
   {en:"algorithm", zh:"演算法"},   {en:"recursion", zh:"遞迴"},
@@ -65,7 +66,22 @@ let log = {};
 try { log = JSON.parse(localStorage.getItem("vb-log")) || {}; } catch(e){}
 function save(){ try { localStorage.setItem("vb-log", JSON.stringify(log)); } catch(e){} }
 
-let queue = [...WORDS];   // Sprint 1：每天全部複習。Sprint 3 會換成 SRS 排程
+// —— 日期：以「第幾天」為單位，附時間旅行測試器 ——
+let dayOffset = 0;
+try { dayOffset = +localStorage.getItem("vb-day") || 0; } catch(e){}
+const today = () => Math.floor(Date.now() / 864e5) + dayOffset;
+window.vbTravel = n => {            // Console 輸入 vbTravel(1) 即快轉一天
+  try { localStorage.setItem("vb-day", dayOffset + n); } catch(e){}
+  location.reload();
+};
+
+function stateOf(w){
+  const s = log[w.en] || (log[w.en] = { seen:0, wrong:0 });
+  if (s.box === undefined){ s.box = 1; s.due = today(); }   // 舊紀錄自動升級
+  return s;
+}
+
+let queue = WORDS.filter(w => stateOf(w).due <= today());   // 只複習「到期」的卡
 let cur = null;
 
 const $ = id => document.getElementById(id);
@@ -74,7 +90,7 @@ function next(){
   $("aiBtn").hidden = true;          // Sprint 2：換卡時藏回 AI 鈕、清空例句
   $("ai").textContent = "";
   if (queue.length === 0){
-    $("card").textContent = "今日完成！";
+    $("card").textContent = "今天沒有到期的卡——明天見！";
     $("meaning").innerHTML = "&nbsp;";
     $("reveal").hidden = $("ok").hidden = $("no").hidden = true;
     return;
@@ -95,8 +111,10 @@ function reveal(){
 }
 
 function mark(ok){
-  const s = log[cur.en] || (log[cur.en] = {seen:0, wrong:0});
+  const s = stateOf(cur);
   s.seen++; if (!ok) s.wrong++;
+  const r = schedule(s.box, ok, today());   // ← 排程交給純函式
+  s.box = r.box; s.due = r.due;
   save();
   if (ok) queue.shift();
   else queue.push(queue.shift());   // 忘了的排到今天隊尾，等一下再考一次
