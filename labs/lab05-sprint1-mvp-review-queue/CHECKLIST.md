@@ -9,7 +9,7 @@
 | 2 | 「忘了」的卡稍後會再出現，直到你答「記得」 | ✅ | 第一張 `algorithm` 答「忘了」後 `queue` 變為 `[recursion, …, interval, algorithm]`，`#stats` 仍「剩 8 張」；實際看到的卡片順序為 algorithm → recursion → … → interval → algorithm，algorithm 出現兩次，最後一次答「記得」才完成。 |
 | 3 | 重新整理後，seen／wrong 統計仍在 | ✅ | 完成後 `log` 為 8 個字各 `seen:1`，`algorithm` 為 `{seen:2, wrong:1}`；`page.reload()` 後 `log` 深度相等，`localStorage.getItem("vb-log")` 含全部字。 |
 | 4 | 手機上按鈕大小、字級可正常操作 | ✅ | iPhone 13 模擬：無水平捲動；「顯示答案」鈕 108×41 px；卡片字級 32px；以 `tap` 點完整佇列到「今日完成！」，無 JS 錯誤。真機未測，請自行再過一輪。 |
-| 5 | PR 已合併、tag `sprint1-done` 已推上 GitHub | ⏳ | issue [#12](https://github.com/ytp26h2/ytp26h2-labs/issues/12)。PR 開出後等管理員合併，tag 由管理員以 Release 建立，合併後補記。 |
+| 5 | PR 已合併、tag `sprint1-done` 已推上 GitHub | ✅ | PR [#13](https://github.com/ytp26h2/ytp26h2-labs/pull/13) 由管理員 `tw-ytp` 於 2026-10-14 合併（merge commit `b42577d`）；issue [#12](https://github.com/ytp26h2/ytp26h2-labs/issues/12) 由 `closes #12` 自動關閉（state_reason=completed）；本地 `main` 與 `origin/main` 皆為 `b42577d`；tag `sprint1-done` 由管理員以 Release 建立，指向 `b42577d`。 |
 
 ## 額外檢查
 
