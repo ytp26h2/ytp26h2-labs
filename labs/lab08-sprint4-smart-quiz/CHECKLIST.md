@@ -9,8 +9,8 @@
 | 2 | 「考我弱點」出的題目來自錯誤率高的字 | ✅ | 預置 persist 錯 3/4、interval 錯 2/3、retrieve 錯 1/2，`weakest(3)` 回 persist 0.75、interval 0.67、retrieve 0.5；送出的 prompt 含這三個字、不含 algorithm。真實呼叫回的題目答案是 `persist`，選項 persist／resist／consist／insist。 |
 | 3 | 格式不合格的題目不會顯示 | ✅ | mock 三個選項、答案不在選項、markdown 圍欄三種情境都不出題，顯示「AI 暫時不可用，先用單字卡複習吧。」；斷網同樣降階。 |
 | 4 | 測驗答錯會寫回 `log`，錯誤率上升 | ✅ | 答錯：`log.algorithm` 由 `{seen:4, wrong:0}` 變 `{seen:5, wrong:1}`，`localStorage` 同步，畫面顯示「正解：algorithm。…」；再答對：`seen` 6、`wrong` 不變，顯示「答對！…」。 |
-| 5 | 第二個單字包經完整 PR 流程合併，repo 有兩頂帽子的 commit | ⏳ | 第一個 PR 合併後開 `lab08/feature/words-animals`，見下方「多人共編」。 |
-| 6 | 四個 sprint tag 齊了 | ⏳ | `sprint1-done`～`sprint3-done` 已在；`sprint4-done` 由管理員在第二個 PR 合併後建立，屆時補記。 |
+| 5 | 第二個單字包經完整 PR 流程合併，repo 有兩頂帽子的 commit | ✅ | 第一個 PR [#22](https://github.com/ytp26h2/ytp26h2-labs/pull/22)（`8cd9bcc`）合併後，從 `main` 開 `lab08/feature/words-animals`，加 10 個動物單字，PR [#23](https://github.com/ytp26h2/ytp26h2-labs/pull/23) 由同一作者換 reviewer 帽子留 review（跑 `check_words.js` 18 字通過、抽查 giraffe／octopus／squirrel 翻譯、格式沿用），管理員 `tw-ytp` 合併（`016744d`）。兩個 PR 的 commit 作者帽子不同、合併者相同。 |
+| 6 | 四個 sprint tag 齊了 | ✅ | `git ls-remote --tags origin`：`sprint1-done`→`b42577d`、`sprint2-done`→`f5e7904`、`sprint3-done`→`6cb6a37`、`sprint4-done`→`016744d`（PR #23 合併點，由管理員以 Release 建立）。第三篇完賽。 |
 
 ## 攔截層明細（15 項全過）
 
@@ -38,8 +38,8 @@
 | Lab 7 時間旅行 | 21/21 |
 | `node test_srs.js` | 4 tests passed |
 
-## 多人共編（第 5 項，待第一個 PR 合併後執行）
+## 多人共編（第 5 項，已完成）
 
-1. 從 `main` 開 `lab08/feature/words-animals`，往 `words.js` 加 8–10 個動物單字。
-2. 開 PR；換 reviewer 帽子：跑 `node check_words.js`、抽查三個字翻譯、留 review。
-3. 管理員合併；補記本表第 5、6 項。
+1. PR #22 合併後從 `main` 開 `lab08/feature/words-animals`，往 `words.js` 加 elephant、dolphin、eagle、penguin、giraffe、squirrel、octopus、kangaroo、butterfly、crocodile。
+2. PR #23：reviewer 帽子跑 `node check_words.js`（18 字通過）、抽查三個字翻譯、確認格式沿用，留 review 後由管理員合併。
+3. 合併前無頭 Chromium 開頁：`WORDS.length` 18、今日佇列 18 張、無 JS 錯誤。

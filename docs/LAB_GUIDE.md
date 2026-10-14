@@ -113,8 +113,8 @@
 ### Lab 8（Sprint 4）：智慧出題與多人共編 ✅
 
 - 產出：`labs/lab08-sprint4-smart-quiz/`（`words.js`、`check_words.js`、`srs.js`、`test_srs.js`、`index.html`、`README.md`、`.gitignore`、`CHECKLIST.md`）
-- GitHub 紀錄：issue [#21](https://github.com/ytp26h2/ytp26h2-labs/issues/21) → PR（分支 `lab08/feature/smart-quiz`，從 `main` 開；commit：chore 起點、feat 出題與共編、docs）→ 單字包 PR（分支 `lab08/feature/words-animals`，同一作者換 reviewer 帽子留 review）
+- GitHub 紀錄：issue [#21](https://github.com/ytp26h2/ytp26h2-labs/issues/21) → PR [#22](https://github.com/ytp26h2/ytp26h2-labs/pull/22)（分支 `lab08/feature/smart-quiz`，從 `main` 開；commit：chore 起點、feat 出題與共編、docs；三則自我 review，`tw-ytp` 合併 `8cd9bcc`）→ 單字包 PR [#23](https://github.com/ytp26h2/ytp26h2-labs/pull/23)（分支 `lab08/feature/words-animals`，10 個動物單字，同一作者換 reviewer 帽子留 review，`tw-ytp` 合併 `016744d`）→ 補記 PR（文件）
 - 教材程式照抄，唯一自己寫的是 `callClaude(system, user)`（教材未給，E-022），由 Lab 6 的 fetch 原樣抽出。
 - 已驗證：`check_words.js` 正反測試；攔截層 15 項（弱字排序與 prompt、題目顯示、答題寫回、三種不合格格式不出題、斷網）；curl 重放與 Chromium 端到端真實出題 200；Lab 6、Lab 7 回歸全過。
 - 勘誤：E-020（`innerHTML` 插入題目，中）、E-021（`log[q.answer]` 以模型字串為鍵，中）、E-022（`callClaude` 缺程式，低）；E-006 加 Sprint 4 的 `closes #7`。
-- 檢查點：`sprint4-done` 由管理員在單字包 PR 合併後以 Target=`main` 建立 Release；第三篇完賽。
+- 檢查點：`sprint4-done` 已由管理員以 Release 建立，指向 PR #23 的合併 commit `016744d`。四個 sprint tag 齊全，第三篇完賽。
