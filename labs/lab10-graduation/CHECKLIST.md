@@ -8,9 +8,9 @@
 | # | 教材驗收項目 | 結果 | 證據 |
 |---|---|---|---|
 | 1 | README 首屏就有：一句話定位、Live 網址、截圖、CI 徽章 | ✅ | [`README.md`](README.md) 前 10 行：CI 徽章、粗體定位句、Live 網址 <https://ytp26h2.github.io/ytp26h2-labs/labs/lab10-graduation/>、`screenshot-phone.png`。PR [#31](https://github.com/ytp26h2/ytp26h2-labs/pull/31)。截圖為無頭 Chromium iPhone 視口，管理員可換真機安裝後的畫面。 |
-| 2 | 3 分鐘 Demo 排練三次以上，有 90 秒備援影片在手機裡 | ⏳ | 逐字稿、保命三招、排練紀錄表在 [`DEMO.md`](DEMO.md)。**模擬排練**（無頭 Chromium 照逐字稿操作，AI 內容為預熱示意）：前兩次快轉計時各 19.7 s、19.6 s；第三次照正常停留 78.3 s（問題 9.0、核心迴路 29.1、兩個亮點 26.3、收尾 13.8），逐格截圖合成 79 秒直式 mp4（1170×1992，含字幕）交給管理員放手機相簿。真人排練三次與影片放進手機由管理員確認後改 ✅。 |
-| 3 | Demo 用的單字已快取預熱，斷網也能完整演示 | ⏳ | 預熱清單（algorithm、recursion、vocabulary、memorize）與步驟在 `DEMO.md` 保命三招①②。本環境已驗證快取命中離線秒回（Lab 9 驗收 O3）；真機預熱由管理員做。 |
-| 4 | 畢業挑戰的 PR 已合併、已上線、自評尺規四個面向都誠實打過分 | ⏳ | PR [#32](https://github.com/ytp26h2/ytp26h2-labs/pull/32) 已合併（main `3d9f2c7`）；自評與反思寫在 issue [#30](https://github.com/ytp26h2/ytp26h2-labs/issues/30) 結案留言。「已上線」與手機實測待管理員回報後改 ✅。 |
+| 2 | 3 分鐘 Demo 排練三次以上，有 90 秒備援影片在手機裡 | ✅ | 管理員 2026-10-14 回報：真人排練三次通過，備援影片已存在手機。逐字稿、保命三招、排練紀錄表在 [`DEMO.md`](DEMO.md)。**模擬排練**（無頭 Chromium 照逐字稿操作，AI 內容為預熱示意）：前兩次快轉計時各 19.7 s、19.6 s；第三次照正常停留 78.3 s（問題 9.0、核心迴路 29.1、兩個亮點 26.3、收尾 13.8），逐格截圖合成 79 秒直式 mp4（1170×1992，含字幕）交給管理員放手機相簿。|
+| 3 | Demo 用的單字已快取預熱，斷網也能完整演示 | ✅ | 管理員 2026-10-14 真機通過：預熱後開飛航模式仍可完整演示。預熱清單（algorithm、recursion、vocabulary、memorize）與步驟在 `DEMO.md` 保命三招①②。本環境已驗證快取命中離線秒回（Lab 9 驗收 O3）；|
+| 4 | 畢業挑戰的 PR 已合併、已上線、自評尺規四個面向都誠實打過分 | ✅ | PR [#32](https://github.com/ytp26h2/ytp26h2-labs/pull/32) 已合併（main `3d9f2c7`）；自評與反思寫在 issue [#30](https://github.com/ytp26h2/ytp26h2-labs/issues/30) 結案留言。管理員 2026-10-14 真機通過：公開網址可貼 CSV 匯入、飛航模式照常；tag [`v1.1`](https://github.com/ytp26h2/ytp26h2-labs/releases/tag/v1.1) 指向 `badb04d`。 |
 | 5 | 回頭看 Lab 1 的第一個 commit——你能說出這一路每個 tag 各代表什麼 | ✅ | 見下方「tag 回顧」。 |
 
 ## tag 回顧（驗收第 5 項）
@@ -25,7 +25,7 @@
 | `sprint3-done` | `6cb6a37` | Leitner SRS：`srs.js` 純函式＋`test_srs.js`、時間旅行 | 7 |
 | `sprint4-done` | `016744d` | 弱點出題（RAG-lite 閉環）、`words.js` 單字包共編＋`check_words.js` | 8 |
 | `v1.0` | `004c8bd` | 上線：GitHub Pages、PWA 可安裝離線、每個 PR 跑 CI | 9 |
-| `v1.1` | 待建 | 作品級 README＋畢業挑戰 CSV 匯入上線 | 10 |
+| `v1.1` | `badb04d` | 作品級 README＋畢業挑戰 CSV 匯入上線 | 10 |
 
 ## 畢業挑戰：issue #30 驗收條件對照
 
@@ -36,7 +36,7 @@
 | 3 | 純函式 `csv.js`，`test_csv.js` 先紅後綠，CI 自動跑 | ✅ | test commit `5757567` 紅：[run 38511126941](https://github.com/ytp26h2/ytp26h2-labs/actions/runs/38511126941)（`Cannot find module './csv.js'`）；feat commit `cd7f954` 綠：[run 38511138978](https://github.com/ytp26h2/ytp26h2-labs/actions/runs/38511138978)（push）、[run 38511173681](https://github.com/ytp26h2/ytp26h2-labs/actions/runs/38511173681)（pull_request），兩個 matrix 目錄皆過 |
 | 4 | 持久化：`vb-words`、重新整理仍在、併入複習／弱點／AI 例句、清除匯入 | ✅ | I2b、I4、I5、I6、I7b、C1～C3 |
 | 5 | 離線：SHELL 含 `csv.js`、CACHE v2、離線匯入與複習照常 | ✅ | O1 快取名 `ytp-vocabuddy-v2`、entries 含 `/csv.js` 與 `/icon.png`；O2、O3 離線重新載入後匯入成功。真機飛航模式待管理員。 |
-| 6 | 流程留痕：分支→測試→PR→自我 review→merge→Pages→手機實測→`v1.1` | ⏳ | 分支 `lab10/feature/csv-import`、PR #32 含[自我 review](https://github.com/ytp26h2/ytp26h2-labs/pull/32#pullrequestreview-5513042301)、已合併；Pages 生效、手機實測、`v1.1` 待管理員 |
+| 6 | 流程留痕：分支→測試→PR→自我 review→merge→Pages→手機實測→`v1.1` | ✅ | 分支 `lab10/feature/csv-import`、PR #32 含[自我 review](https://github.com/ytp26h2/ytp26h2-labs/pull/32#pullrequestreview-5513042301)、已合併；Pages 生效與手機實測由管理員 2026-10-14 通過；[`v1.1`](https://github.com/ytp26h2/ytp26h2-labs/releases/tag/v1.1) 指向 `badb04d` |
 
 ## 瀏覽器驗證明細（20 項全過）
 
