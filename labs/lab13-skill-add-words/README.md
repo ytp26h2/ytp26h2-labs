@@ -16,7 +16,7 @@
 | 問出技能檔要放哪 | 直接問工具確切路徑與 frontmatter 必填欄位 | 全新 `claude -p` session 答：專案層級 `.claude/skills/<name>/SKILL.md`，必填 `name`、`description`；它還主動說「依 CLAUDE.md 要走 issue、分支、PR」。 |
 | 先想清楚要包哪件事 | 一句話：「當我想做＿＿的時候，我希望它自動照著＿＿做」 | 「當我想新增或修改單字包的時候，希望它自動照著讀格式 → 加在最後 → 跑 check_words.js → 用規定訊息 commit → 不自動 push 做」（issue #39）。 |
 | 建立技能，description 當主角 | frontmatter 寫「什麼時候該用」，內容六步 | description 列出使用者可能的說法（加單字、新增單字、加幾個某主題的字、改字表、動 words.js、單字包）；六步照教材，路徑改成 `labs/lab10-graduation/words.js`，commit 訊息改成本 repo 的 `labNN: feat: 新增 N 個「主題」單字`，第 6 條不自動 push 照寫。 |
-| 驗證它真的會被觸發 | 清空工作階段，只說「幫我加三個天氣主題的單字。」 | 全新 `claude -p` session（工具限定 Read／Edit／`node check_words.js`／`git add`、`git commit`，不含 push）：自動 `Skill add-words` → 讀 `words.js` → 加在最後並加 `// 天氣主題單字` → `check_words.js` 24 字 ✓ → 只 commit `words.js` → 沒有 push，還主動回報「push 請人做」。全中。 |
+| 驗證它真的會被觸發 | 清空工作階段，只說「幫我加三個天氣主題的單字。」 | 全新 `claude -p` session（`--allowedTools` 實際清單：Read、Glob、Grep、Edit、Skill、`node check_words.js`、`git add`、`git commit`、`git diff`、`git status`、`git log`；不含 push）：自動 `Skill add-words` → 讀 `words.js` → 加在最後並加 `// 天氣主題單字` → `check_words.js` 24 字 ✓ → 只 commit `words.js` → 沒有 push，還主動回報「push 請人做」。全中。 |
 | 負面測試 | 「幫我把卡片的圓角改大一點。」不應跑 check_words.js | 全新 session 只 `Grep border-radius` 與讀 `index.html`，指出第 40 行；沒有載入技能、沒有跑 `check_words.js`。 |
 | 進版控、發 PR | `feat:` commit，PR 三段式，「怎麼驗證」寫兩個測試 | 分支 `lab13/feature/skill-add-words`；PR 的「怎麼驗證」就是上面兩個測試。 |
 
@@ -30,6 +30,7 @@
 ## 怎麼驗證
 
 ```sh
+# frontmatter 檢查需要 pyyaml（pip install pyyaml）；沒有就直接打開 SKILL.md 看 --- 之間是否只有 name 與 description
 python3 -c "import yaml,re;s=open('.claude/skills/add-words/SKILL.md').read();print(yaml.safe_load(re.match(r'^---\n(.*?)\n---',s,re.S).group(1)))"
 cd labs/lab10-graduation && node check_words.js && node test_srs.js && node test_csv.js
 ```

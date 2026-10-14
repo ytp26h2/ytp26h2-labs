@@ -11,7 +11,7 @@
 | 2 | description 寫的是「什麼時候該用」，不是「這是什麼」 | ✅ | 「新增或修改單字包時使用。使用者說『加單字』『新增單字』『加幾個某主題的字』『改字表』『動 words.js』『單字包』都算。包含…驗證與 commit 訊息格式。」 |
 | 3 | 正面測試通過：不提技能的自然請求，它自動照流程做完 | ✅ | 全新 session 只說「幫我加三個天氣主題的單字。」。工具呼叫序列：`Skill add-words` → `Read words.js` → `Grep ✅`（找 Lab 編號）→ `Edit words.js`（加在最後、`// 天氣主題單字`）→ `Bash node check_words.js`（「共 24 字 ✓」）→ `git status` → `git add words.js && git commit`（只含 words.js）→ 回報「我沒有 push」。11 回合。 |
 | 4 | 負面測試通過：不相干的請求不會誤觸發 | ✅ | 全新 session 說「幫我把卡片的圓角改大一點。」。工具呼叫只有 `Grep border-radius`、`Read index.html`，指出第 40 行 `border-radius:14px`；沒有 `Skill`、沒有 `check_words.js`。3 回合。 |
-| 5 | 技能已進版控，經 PR 合併 | ⏳ | 分支 `lab13/feature/skill-add-words`，commit `ad6f507`（技能）、`7ed5757`（正面測試產物）、`c900513`（第 5 條修正）；PR 合併後補記。 |
+| 5 | 技能已進版控，經 PR 合併 | ✅ | 分支 `lab13/feature/skill-add-words`，commit `ad6f507`（技能）、`7ed5757`（正面測試產物）、`c900513`（第 5 條修正）；PR [#40](https://github.com/ytp26h2/ytp26h2-labs/pull/40) 由主辦 review 後 2026-10-14 合併（`33f7db3`），issue #39 自動關閉；tag `lab13-done` 指向 `33f7db3`。 |
 
 ## 步驟 1：問工具技能放哪
 
