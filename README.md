@@ -19,7 +19,8 @@
 | lab04 | 本地模型與切換（選修）：Ollama 跑開源模型＋降階 | ⏸ 暫緩 |
 | [lab05](labs/lab05-sprint1-mvp-review-queue/) | Sprint 1 MVP：今日複習佇列，記得／忘了自評，localStorage 學習紀錄 | ✅ 完成 |
 | [lab06](labs/lab06-sprint2-ai-example/) | Sprint 2：AI 例句上卡片，瀏覽器直呼 API、自帶金鑰、快取、降階 | ✅ 完成 |
-| lab07–lab14 | 見 [`docs/LAB_GUIDE.md`](docs/LAB_GUIDE.md) | 準備中 |
+| [lab07](labs/lab07-sprint3-srs/) | Sprint 3：Leitner SRS 排程，純函式＋單元測試，時間旅行 | ✅ 完成 |
+| lab08–lab14 | 見 [`docs/LAB_GUIDE.md`](docs/LAB_GUIDE.md) | 準備中 |
 
 總指引：[`docs/LAB_GUIDE.md`](docs/LAB_GUIDE.md)｜教材勘誤：[`docs/ERRATA.md`](docs/ERRATA.md)
 

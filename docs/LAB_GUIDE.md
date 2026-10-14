@@ -36,7 +36,7 @@
 | 4 | Lab 4：本地模型與切換（選修） | 附錄 E | Ollama 跑 Qwen；CLI 改「雲端優先、本地備援、罐頭墊底」 | 60–90 分 | `lab4-done` | ⏸ 暫緩（選修；雲端環境裝不了 Ollama，主辦決定跳過） |
 | 5 | [Sprint 1（Lab 5）：MVP 今日複習佇列](../labs/lab05-sprint1-mvp-review-queue/) | 三・開發實戰 | 核心迴路 看卡→回想→翻面→自評→下一張；localStorage 紀錄 | 1 Sprint | `sprint1-done` | ✅ 完成（2026-10-14） |
 | 6 | [Sprint 2（Lab 6）：AI 例句上卡片](../labs/lab06-sprint2-ai-example/) | 三・開發實戰 | fetch 直呼 API、Structured Output、BYOK＋快取 | 1 Sprint | `sprint2-done` | ✅ 完成（2026-10-14） |
-| 7 | Sprint 3（Lab 7）：SRS 排程演算法 | 三・開發實戰 | 遺忘曲線、Leitner 盒、`srs.js` 純函式＋單元測試、時間旅行 | 1 Sprint | `sprint3-done` | 待做 |
+| 7 | [Sprint 3（Lab 7）：SRS 排程演算法](../labs/lab07-sprint3-srs/) | 三・開發實戰 | 遺忘曲線、Leitner 盒、`srs.js` 純函式＋單元測試、時間旅行 | 1 Sprint | `sprint3-done` | ✅ 完成（2026-10-14） |
 | 8 | Sprint 4（Lab 8）：智慧出題與共編 | 三・開發實戰 | 弱點分析、RAG-lite 出題、`words.js`／`check_words.js` 單字包 PR 共編 | 1 Sprint | `sprint4-done` | 待做 |
 | 9 | Lab 9：上線三連發 | 四・上線與發表 | GitHub Pages、PWA、GitHub Actions CI | 60–90 分 | `v1.0` | 待做 |
 | 10 | Lab 10：發表與畢業 | 四・上線與發表 | 作品級 README、3 分鐘 Demo、畢業挑戰 | 90 分＋ | `v1.0` | 待做 |
@@ -100,3 +100,12 @@
 - 已驗證：無頭 Chromium 攔截 API 跑 17 項（按鈕時機、三欄位、快取、斷網、400、thinking 區塊、無痕）；端到端真實呼叫（Chromium 經代理）200、快取第二次零請求；curl 重放請求體 200。金鑰只從環境變數傳入，repo 內 `git grep 'sk-ant-'` 無金鑰。
 - 勘誤：E-014（高）、E-015（中）、E-016（低）；E-007 措辭修正（4-5 仍可呼叫但回圍欄 JSON）；E-006 加 Sprint 2 的 `closes #5`。
 - 檢查點：`sprint2-done` 已由管理員以 Release 建立，指向 PR #16 的合併 commit `f5e7904`。
+
+### Lab 7（Sprint 3）：SRS 排程 ✅
+
+- 產出：`labs/lab07-sprint3-srs/`（`srs.js`、`test_srs.js`、`index.html`、`README.md`、`.gitignore`、`CHECKLIST.md`）
+- GitHub 紀錄：issue [#18](https://github.com/ytp26h2/ytp26h2-labs/issues/18) → PR（分支 `lab07/feature/srs`，從 `main` 開；commit：chore 起點、feat SRS、docs）
+- 教材程式一字未改。本輪不碰 AI，Lab 6 的 AI 例句原樣保留並做回歸。
+- 已驗證：`node test_srs.js` 四條全過；`INTERVALS` 逐格改壞，盒 3 那格抓不到；無頭 Chromium 時間旅行 46 天 21 項全過（到期篩選、間隔 2→4→8→16、頂級不再升、答錯回盒 1、舊紀錄升級）；Lab 6 回歸 17 項全過。
+- 勘誤：E-017（時間旅行敘述與驗收第 3 項與程式不符，中）、E-018（測試未覆蓋盒 3，中）、E-019（`today()` 為 UTC 日，低）；E-006 加 Sprint 3 的 `closes #6`。E-012 本輪仍未修。
+- 檢查點：`sprint3-done` 由管理員在 PR 合併後以 Target=`main` 建立 Release。
