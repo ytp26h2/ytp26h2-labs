@@ -11,7 +11,7 @@
 | 2 | 五個段落齊全，而且每一條你都認同（不是照抄草稿） | ✅ | 五段：這是什麼專案（4 條）／怎麼跑起來（3）／程式碼慣例（7）／協作規矩（6）／不要做的事（5），共 25 條。草稿全文列給主辦逐條刪改，主辦 2026-10-14 回覆「全部認同，定稿」。慣例條目逐一對應到現有程式碼（見下方觀察表）。 |
 | 3 | 總長度在 60 行以內 | ✅ | `wc -l CLAUDE.md` → 36。 |
 | 4 | 用對照實驗驗證過它真的生效（清空後重跑，它自動照做了） | ✅ | 見下方「對照實驗」：實驗組自動寫出 `// 用途：…` 註解並引用 CLAUDE.md 的純函式慣例；對照組沒有。 |
-| 5 | 經過 issue → 分支 → PR → review → merge 完整走完一輪，issue 自動關閉 | ⏳ | issue #37 → 分支 `lab12/feature/project-instructions` → PR（closes #37）；主辦逐行 review 與合併後補記。 |
+| 5 | 經過 issue → 分支 → PR → review → merge 完整走完一輪，issue 自動關閉 | ✅ | issue #37 → 分支 `lab12/feature/project-instructions` → PR [#38](https://github.com/ytp26h2/ytp26h2-labs/pull/38)（closes #37）→ 主辦 review 後 2026-10-14 合併（`770bbf8`），issue 自動關閉；tag `lab12-done` 指向 `770bbf8`。 |
 
 ## 對照實驗
 

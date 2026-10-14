@@ -42,7 +42,7 @@
 | 10 | [Lab 10：發表與畢業](../labs/lab10-graduation/) | 四・上線與發表 | 作品級 README、3 分鐘 Demo、畢業挑戰（CSV 匯入） | 90 分＋ | `v1.1` | ✅ 完成（2026-10-14；排練與真機實測由管理員通過） |
 | 11 | [Lab 11：開工準備](../labs/lab11-agentic-setup/) | 五・AI-Native | 裝代理式編碼工具、三個驗證問題、逐步確認模式、第一次小改動 | 30 分 | `lab11-done` | ✅ 完成（2026-10-14） |
 | 12 | [Lab 12：讓 AI 認識專案](../labs/lab12-project-instructions/) | 五・AI-Native | 60 行內專案指示檔（CLAUDE.md），對照實驗驗證，走完整 PR | 40 分 | `lab12-done` | ✅ 完成（2026-10-14） |
-| 13 | Lab 13：第一個技能 | 五・AI-Native | 「新增單字」流程包成 SKILL.md，正反驗證觸發 | 45 分 | `lab13-done` | 待做 |
+| 13 | [Lab 13：第一個技能](../labs/lab13-skill-add-words/) | 五・AI-Native | 「新增單字」流程包成 SKILL.md，正反驗證觸發 | 45 分 | `lab13-done` | ✅ 完成（2026-10-14） |
 | 14 | Lab 14：子代理 review | 五・AI-Native | 唯讀 code-reviewer 子代理對真實 PR 跑一次，比較機器審 vs 人審 | 35 分 | `lab14-done` | 待做 |
 
 共 14 個 Lab：13 個主線＋1 個選修（Lab 4）。各篇另有自我檢測（quiz），不列為 Lab。
@@ -156,4 +156,13 @@
 - 對照實驗：同一句話在沒有與有 `CLAUDE.md` 的全新 session 各跑一次。實驗組自動寫出 `// 用途：…` 並引用 CLAUDE.md 的純函式慣例，對照組沒有——指示檔生效。發現教材建議的辨識規矩「加一行繁中註解」在滿是中文註解的 repo 分不出來（E-029）。
 - 已驗證：`wc -l` 36；三支測試過；無頭 Chromium 預設順序不變、`shuffleWords` 純函式、`vbShuffle()` 五次皆重排；回歸失敗項全為 18 字的舊假設。
 - 勘誤：E-028（5.4 範例「用瀏覽器直接開 index.html」在 Lab 9 之後要改 http 伺服器）、E-029（辨識規矩要選模型照抄現狀也不會自然做到的事）。
-- 檢查點：`lab12-done` 由管理員在 PR 合併後以 Release 建立（Target=`main`）。
+- 檢查點：`lab12-done` 已由管理員以 Release 建立，指向 PR #38 的合併 commit `770bbf8`。
+
+### Lab 13：你的第一個技能 ✅
+
+- 產出：`.claude/skills/add-words/SKILL.md`（新增單字六步流程，description 列出使用者說法）；`labs/lab13-skill-add-words/`（README、CHECKLIST）；正面測試產物三個天氣單字進 `labs/lab10-graduation/words.js`（24 字）。
+- GitHub 紀錄：issue [#39](https://github.com/ytp26h2/ytp26h2-labs/issues/39) → PR（分支 `lab13/feature/skill-add-words`；commit：feat 技能、feat 測試產物、fix 第 5 條、docs）。
+- 適配：步驟 1「問工具技能放哪」以全新 `claude -p` session 問出 `.claude/skills/<name>/SKILL.md`；正面測試用 `--allowedTools` 限定讀檔、改檔、`node check_words.js`、`git add`／`git commit`（不含 push）的全新 session，`stream-json` 錄下每個工具呼叫；負面測試只放行讀取工具。
+- 已驗證：正面測試自動 `Skill add-words` → 讀格式 → 加在最後 → `check_words.js` 24 字 → 只 commit `words.js` → 沒有 push；負面測試只 `Grep`／`Read`，沒載入技能。發現第 5 條「看 LAB_GUIDE 最新 ✅ 列」在 Lab 進行中會指到上一個 Lab（它填了 `lab12:`），改為取分支名前綴。
+- 勘誤：無新增。
+- 檢查點：`lab13-done` 由管理員在 PR 合併後以 Release 建立（Target=`main`）。
