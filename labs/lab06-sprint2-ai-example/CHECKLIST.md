@@ -9,7 +9,7 @@
 | 2 | 同一單字第二次點擊不再呼叫 API | ✅ | 攔截層：第二次點擊請求數仍為 1，內容仍顯示；`localStorage` 的 `vb-ai` 含 `algorithm`。端到端：第二次點擊新請求 0 筆。 |
 | 3 | 斷網時顯示友善訊息，複習流程完全不受影響 | ✅ | 以 `route.abort("internetdisconnected")` 模擬：`#ai` 顯示「AI 暫時不可用——不影響複習，例句之後再補。」，接著按「記得」正常換到下一張、`#ai` 清空。另測 API 回 400 時同樣降階、不噴錯。 |
 | 4 | `git grep sk-` 找不到任何金鑰；能解釋為什麼公開網頁不能內建 key | ✅ | `git grep sk-` 只命中 Lab 3／Lab 6 說明文字裡「git grep sk-」這句話本身與 Lab 3 README 的假 key `sk-ant-dummy`；`git grep 'sk-ant-'` 無真金鑰。解釋見 README 末節。 |
-| 5 | PR 已合併、tag `sprint2-done` 已推 | ⏳ | issue [#15](https://github.com/ytp26h2/ytp26h2-labs/issues/15)。PR 開出後等管理員合併，tag 由管理員以 Release 建立，合併後補記。 |
+| 5 | PR 已合併、tag `sprint2-done` 已推 | ✅ | PR [#16](https://github.com/ytp26h2/ytp26h2-labs/pull/16) 由管理員 `tw-ytp` 於 2026-10-14 合併（merge commit `f5e7904`）；issue [#15](https://github.com/ytp26h2/ytp26h2-labs/issues/15) 由 `closes #15` 自動關閉；本地 `main` 與 `origin/main` 皆為 `f5e7904`；tag `sprint2-done` 由管理員以 Release 建立，指向 `f5e7904`。 |
 
 ## 攔截層明細（17 項全過）
 
