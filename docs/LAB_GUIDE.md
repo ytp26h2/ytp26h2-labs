@@ -104,8 +104,8 @@
 ### Lab 7（Sprint 3）：SRS 排程 ✅
 
 - 產出：`labs/lab07-sprint3-srs/`（`srs.js`、`test_srs.js`、`index.html`、`README.md`、`.gitignore`、`CHECKLIST.md`）
-- GitHub 紀錄：issue [#18](https://github.com/ytp26h2/ytp26h2-labs/issues/18) → PR（分支 `lab07/feature/srs`，從 `main` 開；commit：chore 起點、feat SRS、docs）
+- GitHub 紀錄：issue [#18](https://github.com/ytp26h2/ytp26h2-labs/issues/18) → PR [#19](https://github.com/ytp26h2/ytp26h2-labs/pull/19)（分支 `lab07/feature/srs`，從 `main` 開；commit：chore 起點、feat SRS、docs；含三則自我 review 行內評論，由 `tw-ytp` 合併，merge commit `6cb6a37`）→ 補記 PR（文件）
 - 教材程式一字未改。本輪不碰 AI，Lab 6 的 AI 例句原樣保留並做回歸。
 - 已驗證：`node test_srs.js` 四條全過；`INTERVALS` 逐格改壞，盒 3 那格抓不到；無頭 Chromium 時間旅行 46 天 21 項全過（到期篩選、間隔 2→4→8→16、頂級不再升、答錯回盒 1、舊紀錄升級）；Lab 6 回歸 17 項全過。
 - 勘誤：E-017（時間旅行敘述與驗收第 3 項與程式不符，中）、E-018（測試未覆蓋盒 3，中）、E-019（`today()` 為 UTC 日，低）；E-006 加 Sprint 3 的 `closes #6`。E-012 本輪仍未修。
-- 檢查點：`sprint3-done` 由管理員在 PR 合併後以 Target=`main` 建立 Release。
+- 檢查點：`sprint3-done` 已由管理員以 Release 建立，指向 PR #19 的合併 commit `6cb6a37`。
