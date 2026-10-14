@@ -23,7 +23,7 @@ python tools/gen_example.py algorithm
 ## 技術
 
 - `anthropic` 官方 Python SDK 1.x（需 Python 3.10+）。
-- 模型 `claude-sonnet-5-5`（主辦指定；教材原文的 `claude-sonnet-4-5` 已過時，見勘誤 E-007）。
+- 模型 `claude-sonnet-5-5`（主辦指定；教材 v2.1 已更新為此型號，見勘誤 E-007）。
 - v2 資料流：prompt 要求只回 JSON → `json.loads` → 檢查 `sentence` 含單字 → 失敗重試一次 → 降階罐頭。這就是教材 2.8 的「驗證＋降階」。
 
 ## 作者
