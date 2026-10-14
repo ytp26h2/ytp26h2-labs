@@ -1,5 +1,5 @@
-const CACHE = "ytp-vocabuddy-v1";     // 改版時把 v1 改成 v2，舊快取才會換新
-const SHELL = ["./", "index.html", "words.js", "srs.js", "manifest.json"];
+const CACHE = "ytp-vocabuddy-v2";     // Lab 10 改版：v1 → v2，舊快取才會換新
+const SHELL = ["./", "index.html", "words.js", "srs.js", "csv.js", "manifest.json", "icon.png"];  // Lab 10 加 csv.js；icon.png 見 E-025
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)));   // 安裝時先存一份

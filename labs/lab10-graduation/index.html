@@ -43,6 +43,11 @@
   button{margin:8px 6px 0;padding:10px 22px;font-size:1rem;border:none;border-radius:8px;
          background:#0f766e;color:#fff;cursor:pointer}
   button.warn{background:#b3403a}
+  button.ghost{background:#fff;color:#0f766e;border:1px solid #0f766e}
+  #csv{width:100%;max-width:340px;height:120px;margin-top:8px;padding:8px;font:inherit;font-size:.95rem;
+       border:1px solid #bbb;border-radius:8px;box-sizing:border-box}
+  #importMsg{max-width:340px;margin:8px auto;color:#333;font-size:.95rem;text-align:left}
+  #importMsg .err{color:#b3403a}
 </style>
 </head>
 <body>
@@ -61,8 +66,20 @@
   <button onclick="smartQuiz()">考我弱點</button>
   <div id="quiz" style="max-width:340px;margin:8px auto;color:#333"></div>
 </div>
+<div style="margin-top:20px">
+  <button id="importBtn" class="ghost" onclick="toggleImport()">匯入單字</button>
+  <div id="importBox" hidden>
+    <textarea id="csv" placeholder="每行一個：en,zh&#10;apple,蘋果&#10;&quot;give up&quot;,放棄"></textarea>
+    <div>
+      <button onclick="importCSV()">匯入</button>
+      <button id="clearBtn" class="warn" onclick="clearImported()">清除匯入</button>
+    </div>
+    <div id="importMsg"></div>
+  </div>
+</div>
 <script src="words.js"></script>
 <script src="srs.js"></script>
+<script src="csv.js"></script>
 <script>
 // 單字包已搬到 words.js（Sprint 4：全隊共編，進 Git）
 
@@ -85,6 +102,13 @@ function stateOf(w){
   if (s.box === undefined){ s.box = 1; s.due = today(); }   // 舊紀錄自動升級
   return s;
 }
+
+// ---------- 畢業挑戰：匯入的自訂單字存這台裝置的 localStorage，載入時併入 WORDS ----------
+function loadCustom(){
+  try { return JSON.parse(localStorage.getItem("vb-words")) || []; } catch(e){ return []; }
+}
+function saveCustom(list){ try { localStorage.setItem("vb-words", JSON.stringify(list)); } catch(e){} }
+WORDS.push(...loadCustom());          // WORDS 是 const 陣列，可以 push，不能重新指定
 
 let queue = WORDS.filter(w => stateOf(w).due <= today());   // 只複習「到期」的卡
 let cur = null;
@@ -231,6 +255,38 @@ async function smartQuiz(){
   } catch (e) {
     box.textContent = "AI 暫時不可用，先用單字卡複習吧。";
   }
+}
+
+// ---------- 畢業挑戰：單字包 CSV 匯入（解析與驗證是 csv.js 的純函式；這裡只管畫面與儲存） ----------
+function toggleImport(){
+  const box = $("importBox");
+  box.hidden = !box.hidden;
+  if (!box.hidden) $("csv").focus();
+}
+
+function importCSV(){
+  const { ok, errors } = validateWords(parseCSV($("csv").value), WORDS);   // 既有＝words.js＋先前匯入
+  const msg = $("importMsg");
+  msg.textContent = "";
+  if (ok.length){
+    saveCustom(loadCustom().concat(ok));
+    WORDS.push(...ok);
+    ok.forEach(w => { if (stateOf(w).due <= today() && !queue.includes(w)) queue.push(w); });   // 新字今天就到期
+    if (!cur || queue.length === ok.length) next(); else stats();   // 原本已複習完就直接出卡，否則只更新張數
+    $("csv").value = "";
+  }
+  // 訊息用 textContent 逐行建立，CSV 裡的內容原樣顯示、不會被當成 HTML（對照 E-015）
+  const line = (text, cls) => { const d = document.createElement("div"); d.textContent = text; if (cls) d.className = cls; msg.appendChild(d); };
+  line("匯入 " + ok.length + " 個單字" + (ok.length ? "：" + ok.map(w => w.en).join("、") : ""));
+  errors.forEach(e => line("第 " + e.line + " 行：" + e.reason, "err"));
+}
+
+function clearImported(){
+  const custom = loadCustom();
+  if (!custom.length){ $("importMsg").textContent = "沒有匯入過的單字。"; return; }
+  if (!confirm("移除 " + custom.length + " 個匯入的單字？學習紀錄會保留。")) return;
+  saveCustom([]);
+  location.reload();                     // 最簡單可靠的「重算佇列」：重新載入，只剩 words.js 的字
 }
 
 next();
