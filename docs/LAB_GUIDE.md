@@ -40,7 +40,7 @@
 | 8 | [Sprint 4（Lab 8）：智慧出題與共編](../labs/lab08-sprint4-smart-quiz/) | 三・開發實戰 | 弱點分析、RAG-lite 出題、`words.js`／`check_words.js` 單字包 PR 共編 | 1 Sprint | `sprint4-done` | ✅ 完成（2026-10-14） |
 | 9 | [Lab 9：上線三連發](../labs/lab09-ship-it/) | 四・上線與發表 | GitHub Pages、PWA、GitHub Actions CI | 60–90 分 | `v1.0` | ✅ 完成（2026-10-14；Pages 與手機實測由管理員通過） |
 | 10 | [Lab 10：發表與畢業](../labs/lab10-graduation/) | 四・上線與發表 | 作品級 README、3 分鐘 Demo、畢業挑戰（CSV 匯入） | 90 分＋ | `v1.1` | ✅ 完成（2026-10-14；排練與真機實測由管理員通過） |
-| 11 | Lab 11：開工準備 | 五・AI-Native | 裝代理式編碼工具、三個驗證問題、逐步確認模式、第一次小改動 | 30 分 | `lab11-done` | 待做 |
+| 11 | [Lab 11：開工準備](../labs/lab11-agentic-setup/) | 五・AI-Native | 裝代理式編碼工具、三個驗證問題、逐步確認模式、第一次小改動 | 30 分 | `lab11-done` | ✅ 完成（2026-10-14） |
 | 12 | Lab 12：讓 AI 認識專案 | 五・AI-Native | 60 行內專案指示檔（CLAUDE.md），對照實驗驗證，走完整 PR | 40 分 | `lab12-done` | 待做 |
 | 13 | Lab 13：第一個技能 | 五・AI-Native | 「新增單字」流程包成 SKILL.md，正反驗證觸發 | 45 分 | `lab13-done` | 待做 |
 | 14 | Lab 14：子代理 review | 五・AI-Native | 唯讀 code-reviewer 子代理對真實 PR 跑一次，比較機器審 vs 人審 | 35 分 | `lab14-done` | 待做 |
@@ -138,3 +138,12 @@
 - 已驗證：node 三支測試；無頭 Chromium 匯入流程 20 項、Lab 9 PWA 回歸 11 項、Lab 8 回歸 14/15（E-023）；Actions 紅→綠 run 連結在 CHECKLIST。
 - 勘誤：E-026（附錄 D 把 `v1.0` 寫成含作品級 README，但 Lab 9 驗收就要打 `v1.0`，README 作品化在 Lab 10；畢業挑戰上線也沒有對應 tag）。
 - 檢查點：`v1.1` 已由管理員以 Release 建立，指向 PR #33 的合併 commit `badb04d`。第四篇完賽：十個 Lab（Lab 4 暫緩）、九個 tag。
+
+### Lab 11：開工準備 ✅
+
+- 產出：`labs/lab11-agentic-setup/`（只有 `README.md`、`CHECKLIST.md`；附錄 D：Lab 11 無新增程式檔）。小改動落在 `labs/lab10-graduation/words.js`：加 loop、variable、debug，commit `70bebc2`。
+- GitHub 紀錄：issue [#35](https://github.com/ytp26h2/ytp26h2-labs/issues/35) → PR（分支 `lab11/feature/algo-words`；commit：feat 小改動、docs）。
+- 適配：工具就是本 Claude Code 網頁 session（容器內 CLI 2.1.299、Node 22、模型 `claude-fable-5-1`），「安裝」以記錄版本與認證狀態替代；工作目錄＝repo 根，三個驗證問題只根據倉庫檔案回答並附檔名行號；逐步確認：app 端切換未生效（`get_session` 仍回 `auto`），改以明確提問在改檔前、commit 前各取得主辦同意；第 3 題答兩處（Lab 1 起始碼 8 字、現行 App `words.js` 18 字）。
+- 已驗證：教材五項全過；小改動以 `git diff`、`git status`、`check_words.js`、無頭 Chromium 複習到新字為證，主辦看過才 commit。
+- 勘誤：E-027（第 3 題答案「8 個單字」只對 Lab 1 狀態成立，做完 Sprint 4 的學生單字在 `words.js`；「按『下一張』」的按鈕 Sprint 1 後已不存在）。
+- 檢查點：`lab11-done` 由管理員在 PR 合併後以 Release 建立（Target=`main`）。

@@ -9,6 +9,9 @@ const WORDS = [
   {en:"eagle", zh:"老鷹"},          {en:"penguin", zh:"企鵝"},
   {en:"giraffe", zh:"長頸鹿"},      {en:"squirrel", zh:"松鼠"},
   {en:"octopus", zh:"章魚"},        {en:"kangaroo", zh:"袋鼠"},
-  {en:"butterfly", zh:"蝴蝶"},      {en:"crocodile", zh:"鱷魚"}
+  {en:"butterfly", zh:"蝴蝶"},      {en:"crocodile", zh:"鱷魚"},
+  // 演算法主題單字（Lab 11 第一次小改動）
+  {en:"loop", zh:"迴圈"},           {en:"variable", zh:"變數"},
+  {en:"debug", zh:"除錯"}
 ];
 if (typeof module !== "undefined") module.exports = WORDS;
