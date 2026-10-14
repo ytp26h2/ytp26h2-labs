@@ -39,7 +39,7 @@
 | 7 | [Sprint 3（Lab 7）：SRS 排程演算法](../labs/lab07-sprint3-srs/) | 三・開發實戰 | 遺忘曲線、Leitner 盒、`srs.js` 純函式＋單元測試、時間旅行 | 1 Sprint | `sprint3-done` | ✅ 完成（2026-10-14） |
 | 8 | [Sprint 4（Lab 8）：智慧出題與共編](../labs/lab08-sprint4-smart-quiz/) | 三・開發實戰 | 弱點分析、RAG-lite 出題、`words.js`／`check_words.js` 單字包 PR 共編 | 1 Sprint | `sprint4-done` | ✅ 完成（2026-10-14） |
 | 9 | [Lab 9：上線三連發](../labs/lab09-ship-it/) | 四・上線與發表 | GitHub Pages、PWA、GitHub Actions CI | 60–90 分 | `v1.0` | ✅ 完成（2026-10-14；Pages 與手機實測由管理員通過） |
-| 10 | [Lab 10：發表與畢業](../labs/lab10-graduation/) | 四・上線與發表 | 作品級 README、3 分鐘 Demo、畢業挑戰（CSV 匯入） | 90 分＋ | `v1.1` | ✅ 程式與文件完成（2026-10-14）；排練、真機實測、`v1.1` 待管理員 |
+| 10 | [Lab 10：發表與畢業](../labs/lab10-graduation/) | 四・上線與發表 | 作品級 README、3 分鐘 Demo、畢業挑戰（CSV 匯入） | 90 分＋ | `v1.1` | ✅ 完成（2026-10-14；排練與真機實測由管理員通過） |
 | 11 | Lab 11：開工準備 | 五・AI-Native | 裝代理式編碼工具、三個驗證問題、逐步確認模式、第一次小改動 | 30 分 | `lab11-done` | 待做 |
 | 12 | Lab 12：讓 AI 認識專案 | 五・AI-Native | 60 行內專案指示檔（CLAUDE.md），對照實驗驗證，走完整 PR | 40 分 | `lab12-done` | 待做 |
 | 13 | Lab 13：第一個技能 | 五・AI-Native | 「新增單字」流程包成 SKILL.md，正反驗證觸發 | 45 分 | `lab13-done` | 待做 |
@@ -137,4 +137,4 @@
 - 適配：作品級 README 放在 Lab 10 資料夾（根 README 維持範本說明）；排練、錄影、互相 Demo、真機實測由管理員做並記入 CHECKLIST；里程碑 tag 用 `v1.1`，因為 `v1.0` 已在 Lab 9 打過。
 - 已驗證：node 三支測試；無頭 Chromium 匯入流程 20 項、Lab 9 PWA 回歸 11 項、Lab 8 回歸 14/15（E-023）；Actions 紅→綠 run 連結在 CHECKLIST。
 - 勘誤：E-026（附錄 D 把 `v1.0` 寫成含作品級 README，但 Lab 9 驗收就要打 `v1.0`，README 作品化在 Lab 10；畢業挑戰上線也沒有對應 tag）。
-- 檢查點：`v1.1` 由管理員在真機實測後以 Release 建立（Target=`main`），建好後補記指向的 commit。
+- 檢查點：`v1.1` 已由管理員以 Release 建立，指向 PR #33 的合併 commit `badb04d`。第四篇完賽：十個 Lab（Lab 4 暫緩）、九個 tag。

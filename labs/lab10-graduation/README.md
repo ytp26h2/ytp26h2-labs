@@ -17,7 +17,7 @@
 - **弱點出題**：從學習紀錄找出錯誤率最高的三個字，餵給模型出四選一克漏字，答題結果再寫回紀錄，形成閉環。
 - **離線可用**：PWA，service worker 快取整個 App；飛航模式照常複習，AI 例句顯示快取或友善訊息。
 - **自帶金鑰（BYOK）**：API key 只存在你自己的瀏覽器，前端沒有任何祕密。
-- **單字包匯入**（畢業挑戰，開發中，見 [issue #30](https://github.com/ytp26h2/ytp26h2-labs/issues/30)）：貼上 `en,zh` CSV 即可擴充自訂單字，含格式驗證。
+- **單字包匯入**（畢業挑戰，[issue #30](https://github.com/ytp26h2/ytp26h2-labs/issues/30)）：貼上 `en,zh` CSV 即可擴充自訂單字，含格式驗證。
 
 ## 技術與架構
 
@@ -56,7 +56,7 @@ node test_srs.js && node check_words.js
 
 ## Roadmap
 
-- **單字包 CSV 匯入**（進行中）：貼上即匯入、逐行驗證、離線可用。
+- ~~單字包 CSV 匯入~~：已於 `v1.1` 上線。
 - **SM-2 排程**：把 Leitner 換成帶容易度係數的 SM-2，測試先行。
 - **語音發音**：Web Speech API 讓卡片開口說話。
 - **學習統計頁**：用 SVG 畫出自己的遺忘曲線與答對率趨勢。
