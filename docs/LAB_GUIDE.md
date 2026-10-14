@@ -35,7 +35,7 @@
 | 3 | [Lab 3：例句生成 CLI](../labs/lab03-example-cli/) | 二・AI 與 LLM | Python 呼叫 Claude API，單字→例句＋翻譯＋聯想；v2 加 JSON、驗證、降階 | 60–90 分 | `lab3-done` | ✅ 完成（2026-10-13 真實呼叫補驗） |
 | 4 | Lab 4：本地模型與切換（選修） | 附錄 E | Ollama 跑 Qwen；CLI 改「雲端優先、本地備援、罐頭墊底」 | 60–90 分 | `lab4-done` | ⏸ 暫緩（選修；雲端環境裝不了 Ollama，主辦決定跳過） |
 | 5 | [Sprint 1（Lab 5）：MVP 今日複習佇列](../labs/lab05-sprint1-mvp-review-queue/) | 三・開發實戰 | 核心迴路 看卡→回想→翻面→自評→下一張；localStorage 紀錄 | 1 Sprint | `sprint1-done` | ✅ 完成（2026-10-14） |
-| 6 | Sprint 2（Lab 6）：AI 例句上卡片 | 三・開發實戰 | fetch 直呼 API、Structured Output、BYOK＋快取 | 1 Sprint | `sprint2-done` | 待做 |
+| 6 | [Sprint 2（Lab 6）：AI 例句上卡片](../labs/lab06-sprint2-ai-example/) | 三・開發實戰 | fetch 直呼 API、Structured Output、BYOK＋快取 | 1 Sprint | `sprint2-done` | ✅ 完成（2026-10-14） |
 | 7 | Sprint 3（Lab 7）：SRS 排程演算法 | 三・開發實戰 | 遺忘曲線、Leitner 盒、`srs.js` 純函式＋單元測試、時間旅行 | 1 Sprint | `sprint3-done` | 待做 |
 | 8 | Sprint 4（Lab 8）：智慧出題與共編 | 三・開發實戰 | 弱點分析、RAG-lite 出題、`words.js`／`check_words.js` 單字包 PR 共編 | 1 Sprint | `sprint4-done` | 待做 |
 | 9 | Lab 9：上線三連發 | 四・上線與發表 | GitHub Pages、PWA、GitHub Actions CI | 60–90 分 | `v1.0` | 待做 |
@@ -90,3 +90,13 @@
 - 適配：h1 依教材回到「YTP VocaBuddy」；手機實測以裝置模擬代替；tag 由管理員以 Release 建立。
 - 勘誤：E-012（完成時 `#stats` 未更新）、E-013（重新整理重置佇列未說明）、E-006 範圍擴大（Sprint 1 `closes #4` 寫死）。見 `ERRATA.md`。
 - 檢查點：`sprint1-done` 已由管理員以 Release 建立，指向 PR #13 的合併 commit `b42577d`。
+
+### Lab 6（Sprint 2）：AI 例句上卡片 ✅
+
+- 產出：`labs/lab06-sprint2-ai-example/`（`index.html`、`README.md`、`.gitignore`、`CHECKLIST.md`）
+- GitHub 紀錄：issue [#15](https://github.com/ytp26h2/ytp26h2-labs/issues/15) → PR（分支 `lab06/feature/ai-example`，從 `main` 開；commit：chore 起點、feat AI 例句、docs）
+- 模型：`claude-sonnet-5-5`（主辦指定）。瀏覽器直呼 Messages API，使用者自帶金鑰存 localStorage。
+- 與教材原碼差異四處，皆為新模型上跑不動的部分：`MODEL`（E-007）、拿掉 `temperature`（E-014，否則 400）、依 type 挑 text 區塊（E-009）、`max_tokens` 1024（E-011）；system 加「不要 markdown 圍欄」。`show()` 的 `innerHTML` 注入風險依主辦決定不改（E-015）。
+- 已驗證：無頭 Chromium 攔截 API 跑 17 項（按鈕時機、三欄位、快取、斷網、400、thinking 區塊、無痕）；端到端真實呼叫（Chromium 經代理）200、快取第二次零請求；curl 重放請求體 200。金鑰只從環境變數傳入，repo 內 `git grep 'sk-ant-'` 無金鑰。
+- 勘誤：E-014（高）、E-015（中）、E-016（低）；E-007 措辭修正（4-5 仍可呼叫但回圍欄 JSON）；E-006 加 Sprint 2 的 `closes #5`。
+- 檢查點：`sprint2-done` 由管理員在 PR 合併後以 Target=`main` 建立 Release。
