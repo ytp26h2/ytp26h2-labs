@@ -38,7 +38,7 @@
 | 6 | [Sprint 2（Lab 6）：AI 例句上卡片](../labs/lab06-sprint2-ai-example/) | 三・開發實戰 | fetch 直呼 API、Structured Output、BYOK＋快取 | 1 Sprint | `sprint2-done` | ✅ 完成（2026-10-14） |
 | 7 | [Sprint 3（Lab 7）：SRS 排程演算法](../labs/lab07-sprint3-srs/) | 三・開發實戰 | 遺忘曲線、Leitner 盒、`srs.js` 純函式＋單元測試、時間旅行 | 1 Sprint | `sprint3-done` | ✅ 完成（2026-10-14） |
 | 8 | [Sprint 4（Lab 8）：智慧出題與共編](../labs/lab08-sprint4-smart-quiz/) | 三・開發實戰 | 弱點分析、RAG-lite 出題、`words.js`／`check_words.js` 單字包 PR 共編 | 1 Sprint | `sprint4-done` | ✅ 完成（2026-10-14） |
-| 9 | Lab 9：上線三連發 | 四・上線與發表 | GitHub Pages、PWA、GitHub Actions CI | 60–90 分 | `v1.0` | 待做 |
+| 9 | [Lab 9：上線三連發](../labs/lab09-ship-it/) | 四・上線與發表 | GitHub Pages、PWA、GitHub Actions CI | 60–90 分 | `v1.0` | ✅ 完成（2026-10-14；Pages 與手機實測由管理員） |
 | 10 | Lab 10：發表與畢業 | 四・上線與發表 | 作品級 README、3 分鐘 Demo、畢業挑戰 | 90 分＋ | `v1.0` | 待做 |
 | 11 | Lab 11：開工準備 | 五・AI-Native | 裝代理式編碼工具、三個驗證問題、逐步確認模式、第一次小改動 | 30 分 | `lab11-done` | 待做 |
 | 12 | Lab 12：讓 AI 認識專案 | 五・AI-Native | 60 行內專案指示檔（CLAUDE.md），對照實驗驗證，走完整 PR | 40 分 | `lab12-done` | 待做 |
@@ -118,3 +118,12 @@
 - 已驗證：`check_words.js` 正反測試；攔截層 15 項（弱字排序與 prompt、題目顯示、答題寫回、三種不合格格式不出題、斷網）；curl 重放與 Chromium 端到端真實出題 200；Lab 6、Lab 7 回歸全過。
 - 勘誤：E-020（`innerHTML` 插入題目，中）、E-021（`log[q.answer]` 以模型字串為鍵，中）、E-022（`callClaude` 缺程式，低）；E-006 加 Sprint 4 的 `closes #7`。
 - 檢查點：`sprint4-done` 已由管理員以 Release 建立，指向 PR #23 的合併 commit `016744d`。四個 sprint tag 齊全，第三篇完賽。
+
+### Lab 9：上線三連發 ✅
+
+- 產出：`labs/lab09-ship-it/`（App 全套＋`manifest.json`、`sw.js`、`icon.png`、`README.md`、`CHECKLIST.md`）與根目錄 `.github/workflows/ci.yml`；根 README 掛 CI 徽章。
+- GitHub 紀錄：issue [#25](https://github.com/ytp26h2/ytp26h2-labs/issues/25) → PR（分支 `lab09/feature/ship-it`；commit：chore 起點、feat PWA 與 CI、故意改壞讓 CI 紅、修回轉綠、docs）
+- 適配：App 在子目錄，CI 以 `working-directory` 指到 `labs/lab09-ship-it`；Pages 根由 README 渲染，App 網址 `https://ytp26h2.github.io/ytp26h2-labs/labs/lab09-ship-it/`；手機安裝與飛航模式由管理員在裝置上做。
+- 已驗證：CI 綠→紅→綠（Actions run 連結在 CHECKLIST）；本地 `http://localhost` 無頭 Chromium：manifest、service worker 註冊與快取、離線複習與 AI 例句快取 11 項全過；安檢清單過。
+- 勘誤：E-023（`file://` 下 service worker 註冊丟錯，中）、E-024（`on: [push, pull_request]` 跑兩次，低）、E-025（SHELL 未列 icon.png，低）；E-006 加 Lab 9 的 `closes #8`。
+- 檢查點：`v1.0` 由管理員在 PR 合併後以 Release 建立。
