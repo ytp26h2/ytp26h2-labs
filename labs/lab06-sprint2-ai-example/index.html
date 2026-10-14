@@ -1,0 +1,110 @@
+<!--
+  PLAN｜Lab 6（Sprint 2）：AI 例句上卡片
+  教材：https://tw-ytp.github.io/vocabuddy/#/3-2（v2.0，2026-09-08）
+  確認日期：2026-10-14（由 YTP 主辦確認後執行；模型指定 claude-sonnet-5-5）
+  起點：Lab 5 成果複製到 labs/lab06-sprint2-ai-example/
+
+   1. 建立本資料夾：複製 Lab 5 的 index.html 與 .gitignore，頂端放本 PLAN 註解。
+   2. 開 issue「Sprint 2：卡片上的 AI 例句」→ #15。
+   3. 從 main 開分支 lab06/feature/ai-example。
+   4. 照教材加「AI 例句」按鈕、#ai 段落、getKey()、aiExample()（fetch 直呼 API、
+      Structured Output、使用者自帶金鑰存 localStorage、快取、降階）。
+      只改在新模型上跑不動的四處，每處註解標勘誤編號：MODEL（E-007）、拿掉 temperature（E-014）、
+      依 type 挑 text 區塊（E-009）、max_tokens 1024（E-011）；system 加「不要 markdown 圍欄」。
+      show() 的 innerHTML 注入風險依主辦決定不改，記勘誤 E-015。
+      commit「lab06: feat: 卡片 AI 例句（快取＋降階），closes #15」。
+   5. 驗收兩層：無頭 Chromium 攔截 API（按鈕時機、三欄位、快取不發請求、斷網友善訊息、
+      400 不壞、無痕重新要 key），再以 curl 重放頁面送出的請求體到真實 API 確認 200 與三欄位。
+      金鑰只在指令內傳入；測試用假 key 不進 repo；git grep sk- 必須無金鑰。
+   6. PR → main，三段描述；在 fetch 區塊留自我 review 行內評論；由管理員合併。
+   7. 文件：README、CHECKLIST.md、docs/LAB_GUIDE.md、根目錄 README、ERRATA（E-014～E-016）。
+   8. 檢查點 sprint2-done 由管理員以 Release 建立。
+  適配：教材「關網路」以攔截請求失敗模擬；「無痕視窗」以新 browser context 模擬。
+  勘誤候選：temperature 在 claude-sonnet-5-5 回 400（E-014）；show() 以 innerHTML 塞模型輸出（E-015）；
+           prompt() 取消時把 "null" 存進 vb-key、之後永遠 401（E-016）；closes #5 寫死（E-006 同類）；
+           claude-sonnet-4-5 其實仍可呼叫，但回 markdown 圍欄 JSON 讓教材 JSON.parse 失敗（E-007 措辭修正）。
+-->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YTP VocaBuddy</title>
+<style>
+  body{font-family:system-ui,sans-serif;background:#f4f6f5;margin:0;padding:24px;text-align:center}
+  h1{color:#0f766e}
+  #stats{color:#666;font-size:.95rem}
+  #card{max-width:340px;margin:24px auto 8px;padding:36px 24px;background:#fff;border-radius:14px;
+        box-shadow:0 4px 16px rgba(0,0,0,.08);font-size:2rem;user-select:none}
+  #meaning{color:#0f766e;font-size:1.2rem;min-height:1.6em}
+  button{margin:8px 6px 0;padding:10px 22px;font-size:1rem;border:none;border-radius:8px;
+         background:#0f766e;color:#fff;cursor:pointer}
+  button.warn{background:#b3403a}
+</style>
+</head>
+<body>
+<h1>YTP VocaBuddy</h1>
+<p id="stats"></p>
+<div id="card">—</div>
+<p id="meaning">&nbsp;</p>
+<div>
+  <button id="reveal" onclick="reveal()">顯示答案</button>
+  <button id="ok" onclick="mark(true)" hidden>記得 ✓</button>
+  <button id="no" onclick="mark(false)" class="warn" hidden>忘了 ✗</button>
+</div>
+<script>
+const WORDS = [
+  {en:"algorithm", zh:"演算法"},   {en:"recursion", zh:"遞迴"},
+  {en:"vocabulary", zh:"字彙"},    {en:"memorize", zh:"背誦"},
+  {en:"efficient", zh:"有效率的"}, {en:"persist", zh:"堅持；持續"},
+  {en:"retrieve", zh:"取回；檢索"},{en:"interval", zh:"間隔"}
+];
+
+// 學習紀錄：只屬於這台裝置，所以放 localStorage（讀寫都包 try/catch）
+let log = {};
+try { log = JSON.parse(localStorage.getItem("vb-log")) || {}; } catch(e){}
+function save(){ try { localStorage.setItem("vb-log", JSON.stringify(log)); } catch(e){} }
+
+let queue = [...WORDS];   // Sprint 1：每天全部複習。Sprint 3 會換成 SRS 排程
+let cur = null;
+
+const $ = id => document.getElementById(id);
+
+function next(){
+  if (queue.length === 0){
+    $("card").textContent = "今日完成！";
+    $("meaning").innerHTML = "&nbsp;";
+    $("reveal").hidden = $("ok").hidden = $("no").hidden = true;
+    return;
+  }
+  cur = queue[0];
+  $("card").textContent = cur.en;
+  $("meaning").innerHTML = "&nbsp;";
+  $("reveal").hidden = false;
+  $("ok").hidden = $("no").hidden = true;
+  stats();
+}
+
+function reveal(){
+  $("meaning").textContent = cur.zh;
+  $("reveal").hidden = true;
+  $("ok").hidden = $("no").hidden = false;
+}
+
+function mark(ok){
+  const s = log[cur.en] || (log[cur.en] = {seen:0, wrong:0});
+  s.seen++; if (!ok) s.wrong++;
+  save();
+  if (ok) queue.shift();
+  else queue.push(queue.shift());   // 忘了的排到今天隊尾，等一下再考一次
+  next();
+}
+
+function stats(){
+  $("stats").textContent = "今日佇列：剩 " + queue.length + " 張";
+}
+
+next();
+</script>
+</body>
+</html>
