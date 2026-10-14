@@ -94,9 +94,9 @@
 ### Lab 6（Sprint 2）：AI 例句上卡片 ✅
 
 - 產出：`labs/lab06-sprint2-ai-example/`（`index.html`、`README.md`、`.gitignore`、`CHECKLIST.md`）
-- GitHub 紀錄：issue [#15](https://github.com/ytp26h2/ytp26h2-labs/issues/15) → PR（分支 `lab06/feature/ai-example`，從 `main` 開；commit：chore 起點、feat AI 例句、docs）
+- GitHub 紀錄：issue [#15](https://github.com/ytp26h2/ytp26h2-labs/issues/15) → PR [#16](https://github.com/ytp26h2/ytp26h2-labs/pull/16)（分支 `lab06/feature/ai-example`，從 `main` 開；commit：chore 起點、feat AI 例句、docs；含三則自我 review 行內評論，由 `tw-ytp` 合併，merge commit `f5e7904`）→ 補記 PR（文件）
 - 模型：`claude-sonnet-5-5`（主辦指定）。瀏覽器直呼 Messages API，使用者自帶金鑰存 localStorage。
 - 與教材原碼差異四處，皆為新模型上跑不動的部分：`MODEL`（E-007）、拿掉 `temperature`（E-014，否則 400）、依 type 挑 text 區塊（E-009）、`max_tokens` 1024（E-011）；system 加「不要 markdown 圍欄」。`show()` 的 `innerHTML` 注入風險依主辦決定不改（E-015）。
 - 已驗證：無頭 Chromium 攔截 API 跑 17 項（按鈕時機、三欄位、快取、斷網、400、thinking 區塊、無痕）；端到端真實呼叫（Chromium 經代理）200、快取第二次零請求；curl 重放請求體 200。金鑰只從環境變數傳入，repo 內 `git grep 'sk-ant-'` 無金鑰。
 - 勘誤：E-014（高）、E-015（中）、E-016（低）；E-007 措辭修正（4-5 仍可呼叫但回圍欄 JSON）；E-006 加 Sprint 2 的 `closes #5`。
-- 檢查點：`sprint2-done` 由管理員在 PR 合併後以 Target=`main` 建立 Release。
+- 檢查點：`sprint2-done` 已由管理員以 Release 建立，指向 PR #16 的合併 commit `f5e7904`。
