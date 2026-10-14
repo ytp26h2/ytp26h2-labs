@@ -28,7 +28,7 @@
 | [lab11](labs/lab11-agentic-setup/) | 開工準備：代理式編碼工具就位、三個驗證問題、逐步確認、第一次小改動 | ✅ 完成 |
 | [lab12](labs/lab12-project-instructions/) | 讓 AI 認識專案：根目錄 `CLAUDE.md` 專案指示檔，對照實驗驗證生效 | ✅ 完成 |
 | [lab13](labs/lab13-skill-add-words/) | 第一個技能：`.claude/skills/add-words/SKILL.md`，正負觸發測試 | ✅ 完成 |
-| lab14 | 見 [`docs/LAB_GUIDE.md`](docs/LAB_GUIDE.md) | 準備中 |
+| [lab14](labs/lab14-subagent-review/) | 子代理 review：唯讀 `.claude/agents/code-reviewer.md`，機器審 vs 人審四格比較 | ✅ 完成 |
 
 總指引：[`docs/LAB_GUIDE.md`](docs/LAB_GUIDE.md)｜教材勘誤：[`docs/ERRATA.md`](docs/ERRATA.md)
 

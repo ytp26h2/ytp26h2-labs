@@ -37,6 +37,8 @@
 
 全新 session 的模型是 `claude-sonnet-5-5`（CLI 預設），本 session 是 `claude-fable-5-1`；技能仍正確觸發。
 
+**修正後重跑**（Lab 14 的 code-reviewer 子代理指出「修正後沒重跑，證據驗的是舊版」）：在丟棄用分支 `lab13/retest-add-words` 上，全新 session 只說「幫我加三個顏色主題的單字。」→ `Skill add-words` → `git branch --show-current`（不再 grep LAB_GUIDE）→ `Edit` 加 crimson／turquoise／violet 於最後 → `check_words.js` 27 字 ✓ → 只 commit `words.js`，訊息 `lab13: feat: 新增 3 個「顏色」單字`（NN 來自分支名）→ 回報「沒有 push」。8 回合。重測分支未推送、已刪除，顏色單字不進 main。
+
 ## 負面測試：工具呼叫摘錄
 
 | 步 | 工具 | 內容 |
