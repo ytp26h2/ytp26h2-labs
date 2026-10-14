@@ -27,35 +27,78 @@
 <style>
   body{font-family:system-ui,sans-serif;background:#f4f6f5;margin:0;padding:24px;text-align:center}
   h1{color:#0f766e}
-  #card{max-width:340px;margin:32px auto;padding:40px 24px;background:#fff;border-radius:14px;
-        box-shadow:0 4px 16px rgba(0,0,0,.08);font-size:2rem;cursor:pointer;user-select:none}
-  #hint{color:#888;font-size:.9rem}
-  button{margin-top:16px;padding:10px 22px;font-size:1rem;border:none;border-radius:8px;
+  #stats{color:#666;font-size:.95rem}
+  #card{max-width:340px;margin:24px auto 8px;padding:36px 24px;background:#fff;border-radius:14px;
+        box-shadow:0 4px 16px rgba(0,0,0,.08);font-size:2rem;user-select:none}
+  #meaning{color:#0f766e;font-size:1.2rem;min-height:1.6em}
+  button{margin:8px 6px 0;padding:10px 22px;font-size:1rem;border:none;border-radius:8px;
          background:#0f766e;color:#fff;cursor:pointer}
+  button.warn{background:#b3403a}
 </style>
 </head>
 <body>
-<h1>YTP VocaBuddy Pro 2.0 背單字夥伴</h1>
-<div id="card">algorithm</div>
-<p id="hint">點卡片看中文，點「下一張」換單字</p>
-<button onclick="next()">下一張</button>
-<button onclick="quiz()">考我</button>
+<h1>YTP VocaBuddy</h1>
+<p id="stats"></p>
+<div id="card">—</div>
+<p id="meaning">&nbsp;</p>
+<div>
+  <button id="reveal" onclick="reveal()">顯示答案</button>
+  <button id="ok" onclick="mark(true)" hidden>記得 ✓</button>
+  <button id="no" onclick="mark(false)" class="warn" hidden>忘了 ✗</button>
+</div>
 <script>
 const WORDS = [
-  ["algorithm","演算法"],["recursion","遞迴"],["vocabulary","字彙"],
-  ["memorize","背誦"],["efficient","有效率的"],["persist","堅持；持續"],
-  ["retrieve","取回；檢索"],["interval","間隔"]
+  {en:"algorithm", zh:"演算法"},   {en:"recursion", zh:"遞迴"},
+  {en:"vocabulary", zh:"字彙"},    {en:"memorize", zh:"背誦"},
+  {en:"efficient", zh:"有效率的"}, {en:"persist", zh:"堅持；持續"},
+  {en:"retrieve", zh:"取回；檢索"},{en:"interval", zh:"間隔"}
 ];
-let i = 0, flipped = false;
-const card = document.getElementById("card");
-card.onclick = () => { flipped = !flipped; render(); };
-function next(){ i = (i + 1) % WORDS.length; flipped = false; render(); }
-function render(){ card.textContent = WORDS[i][flipped ? 1 : 0]; }
-function quiz(){
-  let j;
-  do { j = Math.floor(Math.random() * WORDS.length); } while (j === i);
-  i = j; flipped = false; render();
+
+// 學習紀錄：只屬於這台裝置，所以放 localStorage（讀寫都包 try/catch）
+let log = {};
+try { log = JSON.parse(localStorage.getItem("vb-log")) || {}; } catch(e){}
+function save(){ try { localStorage.setItem("vb-log", JSON.stringify(log)); } catch(e){} }
+
+let queue = [...WORDS];   // Sprint 1：每天全部複習。Sprint 3 會換成 SRS 排程
+let cur = null;
+
+const $ = id => document.getElementById(id);
+
+function next(){
+  if (queue.length === 0){
+    $("card").textContent = "今日完成！";
+    $("meaning").innerHTML = "&nbsp;";
+    $("reveal").hidden = $("ok").hidden = $("no").hidden = true;
+    return;
+  }
+  cur = queue[0];
+  $("card").textContent = cur.en;
+  $("meaning").innerHTML = "&nbsp;";
+  $("reveal").hidden = false;
+  $("ok").hidden = $("no").hidden = true;
+  stats();
 }
+
+function reveal(){
+  $("meaning").textContent = cur.zh;
+  $("reveal").hidden = true;
+  $("ok").hidden = $("no").hidden = false;
+}
+
+function mark(ok){
+  const s = log[cur.en] || (log[cur.en] = {seen:0, wrong:0});
+  s.seen++; if (!ok) s.wrong++;
+  save();
+  if (ok) queue.shift();
+  else queue.push(queue.shift());   // 忘了的排到今天隊尾，等一下再考一次
+  next();
+}
+
+function stats(){
+  $("stats").textContent = "今日佇列：剩 " + queue.length + " 張";
+}
+
+next();
 </script>
 </body>
 </html>
