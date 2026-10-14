@@ -26,7 +26,8 @@
 | [lab09](labs/lab09-ship-it/) | 上線三連發：GitHub Pages、PWA（可安裝、離線）、GitHub Actions CI | ✅ 完成 |
 | [lab10](labs/lab10-graduation/) | 發表與畢業：作品級 README、3 分鐘 Demo 逐字稿、畢業挑戰「單字包 CSV 匯入」 | ✅ 完成 |
 | [lab11](labs/lab11-agentic-setup/) | 開工準備：代理式編碼工具就位、三個驗證問題、逐步確認、第一次小改動 | ✅ 完成 |
-| lab12–lab14 | 見 [`docs/LAB_GUIDE.md`](docs/LAB_GUIDE.md) | 準備中 |
+| [lab12](labs/lab12-project-instructions/) | 讓 AI 認識專案：根目錄 `CLAUDE.md` 專案指示檔，對照實驗驗證生效 | ✅ 完成 |
+| lab13–lab14 | 見 [`docs/LAB_GUIDE.md`](docs/LAB_GUIDE.md) | 準備中 |
 
 總指引：[`docs/LAB_GUIDE.md`](docs/LAB_GUIDE.md)｜教材勘誤：[`docs/ERRATA.md`](docs/ERRATA.md)
 
