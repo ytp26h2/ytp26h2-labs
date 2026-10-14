@@ -39,7 +39,7 @@
 | 7 | [Sprint 3（Lab 7）：SRS 排程演算法](../labs/lab07-sprint3-srs/) | 三・開發實戰 | 遺忘曲線、Leitner 盒、`srs.js` 純函式＋單元測試、時間旅行 | 1 Sprint | `sprint3-done` | ✅ 完成（2026-10-14） |
 | 8 | [Sprint 4（Lab 8）：智慧出題與共編](../labs/lab08-sprint4-smart-quiz/) | 三・開發實戰 | 弱點分析、RAG-lite 出題、`words.js`／`check_words.js` 單字包 PR 共編 | 1 Sprint | `sprint4-done` | ✅ 完成（2026-10-14） |
 | 9 | [Lab 9：上線三連發](../labs/lab09-ship-it/) | 四・上線與發表 | GitHub Pages、PWA、GitHub Actions CI | 60–90 分 | `v1.0` | ✅ 完成（2026-10-14；Pages 與手機實測由管理員通過） |
-| 10 | Lab 10：發表與畢業 | 四・上線與發表 | 作品級 README、3 分鐘 Demo、畢業挑戰 | 90 分＋ | `v1.0` | 待做 |
+| 10 | [Lab 10：發表與畢業](../labs/lab10-graduation/) | 四・上線與發表 | 作品級 README、3 分鐘 Demo、畢業挑戰（CSV 匯入） | 90 分＋ | `v1.1` | ✅ 程式與文件完成（2026-10-14）；排練、真機實測、`v1.1` 待管理員 |
 | 11 | Lab 11：開工準備 | 五・AI-Native | 裝代理式編碼工具、三個驗證問題、逐步確認模式、第一次小改動 | 30 分 | `lab11-done` | 待做 |
 | 12 | Lab 12：讓 AI 認識專案 | 五・AI-Native | 60 行內專案指示檔（CLAUDE.md），對照實驗驗證，走完整 PR | 40 分 | `lab12-done` | 待做 |
 | 13 | Lab 13：第一個技能 | 五・AI-Native | 「新增單字」流程包成 SKILL.md，正反驗證觸發 | 45 分 | `lab13-done` | 待做 |
@@ -128,3 +128,13 @@
 - 已驗證：CI 綠→紅→綠（Actions run 連結在 CHECKLIST）；本地 `http://localhost` 無頭 Chromium：manifest、service worker 註冊與快取、離線複習與 AI 例句快取 11 項全過；安檢清單過。
 - 勘誤：E-023（`file://` 下 service worker 註冊丟錯，中）、E-024（`on: [push, pull_request]` 跑兩次，低）、E-025（SHELL 未列 icon.png，低）；E-006 加 Lab 9 的 `closes #8`。
 - 檢查點：`v1.0` 已由管理員以 Release 建立，指向 PR #26 的合併 commit `004c8bd`。注意 Release 存成 Draft 時不會建 tag，要按 Publish release 才會出現。
+
+### Lab 10：發表與畢業 ✅
+
+- 產出：`labs/lab10-graduation/`（Lab 9 全套＋作品級 `README.md`、`DEMO.md`、`screenshot-phone.png`、`csv.js`、`test_csv.js`、`CHECKLIST.md`）；根目錄 `ci.yml` 改 matrix 同測 lab09 與 lab10。
+- GitHub 紀錄：issue [#29](https://github.com/ytp26h2/ytp26h2-labs/issues/29)（README 與 Demo）、[#30](https://github.com/ytp26h2/ytp26h2-labs/issues/30)（畢業挑戰，含驗收條件與結案自評）；PR [#31](https://github.com/ytp26h2/ytp26h2-labs/pull/31)（docs：起點、CI matrix、README、DEMO）、PR [#32](https://github.com/ytp26h2/ytp26h2-labs/pull/32)（feat：CSV 匯入，test 與 feat 分開 push 讓 CI 紅→綠，含自我 review）。
+- 畢業挑戰選題：教材五選一的「單字包匯入（資料工程路線）」。`csv.js` 純函式 `parseCSV`／`validateWords`，規則沿用 `check_words.js`；匯入的字存 localStorage `vb-words` 併入 `WORDS`；`sw.js` CACHE 升 v2、SHELL 加 `csv.js` 與 `icon.png`。
+- 適配：作品級 README 放在 Lab 10 資料夾（根 README 維持範本說明）；排練、錄影、互相 Demo、真機實測由管理員做並記入 CHECKLIST；里程碑 tag 用 `v1.1`，因為 `v1.0` 已在 Lab 9 打過。
+- 已驗證：node 三支測試；無頭 Chromium 匯入流程 20 項、Lab 9 PWA 回歸 11 項、Lab 8 回歸 14/15（E-023）；Actions 紅→綠 run 連結在 CHECKLIST。
+- 勘誤：E-026（附錄 D 把 `v1.0` 寫成含作品級 README，但 Lab 9 驗收就要打 `v1.0`，README 作品化在 Lab 10；畢業挑戰上線也沒有對應 tag）。
+- 檢查點：`v1.1` 由管理員在真機實測後以 Release 建立（Target=`main`），建好後補記指向的 commit。
