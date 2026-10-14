@@ -9,7 +9,7 @@
 | 2 | 新的一天只出現「到期」的卡；全答完顯示「明天見」 | ✅ | 第 0 天 8 張全到期；全答完 `#card` 為「今天沒有到期的卡——明天見！」；第 1 天 0 張；第 2 天 8 張；第 3 天 0 張；第 4 天只有前一天答錯重考的 recursion（盒 2 間隔 2）。 |
 | 3 | 用 `vbTravel` 驗證：答對的卡間隔按 1→2→4→8→16 拉長；答錯的隔天就回來 | ✅（教材敘述有誤） | 實測 algorithm 的 `due` 依序為 +2、+6、+14、+30、+46，即間隔 2→4→8→16→16（頂級不再升）。新卡的第一個間隔是 2 不是 1；教材「`vbTravel(1)` 後 8 張回來」實測 0 張。答錯：recursion 第 2 天答錯 → 當天重考答對 → 盒 2 due +2 → 第 4 天回來；只有答錯後關頁不重考，才會「隔天回來」。記為勘誤 E-017。 |
 | 4 | 能對隊友解釋：為什麼 `schedule()` 不自己呼叫 `Date.now()` | ✅ | 見 README「為什麼 `schedule()` 不自己呼叫 `Date.now()`」。 |
-| 5 | PR 已合併、tag `sprint3-done` 已推 | ⏳ | issue [#18](https://github.com/ytp26h2/ytp26h2-labs/issues/18)。PR 開出後等管理員合併，tag 由管理員以 Release 建立，合併後補記。 |
+| 5 | PR 已合併、tag `sprint3-done` 已推 | ✅ | PR [#19](https://github.com/ytp26h2/ytp26h2-labs/pull/19) 由管理員 `tw-ytp` 於 2026-10-14 合併（merge commit `6cb6a37`）；issue [#18](https://github.com/ytp26h2/ytp26h2-labs/issues/18) 由 `closes #18` 自動關閉；本地 `main` 與 `origin/main` 皆為 `6cb6a37`；tag `sprint3-done` 由管理員以 Release 建立，指向 `6cb6a37`。 |
 
 ## 時間旅行明細（21 項全過）
 
