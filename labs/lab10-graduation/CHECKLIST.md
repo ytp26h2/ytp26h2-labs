@@ -8,7 +8,7 @@
 | # | 教材驗收項目 | 結果 | 證據 |
 |---|---|---|---|
 | 1 | README 首屏就有：一句話定位、Live 網址、截圖、CI 徽章 | ✅ | [`README.md`](README.md) 前 10 行：CI 徽章、粗體定位句、Live 網址 <https://ytp26h2.github.io/ytp26h2-labs/labs/lab10-graduation/>、`screenshot-phone.png`。PR [#31](https://github.com/ytp26h2/ytp26h2-labs/pull/31)。截圖為無頭 Chromium iPhone 視口，管理員可換真機安裝後的畫面。 |
-| 2 | 3 分鐘 Demo 排練三次以上，有 90 秒備援影片在手機裡 | ⏳ | 逐字稿、保命三招、排練紀錄表在 [`DEMO.md`](DEMO.md)。排練與錄影由管理員做，完成後補記。 |
+| 2 | 3 分鐘 Demo 排練三次以上，有 90 秒備援影片在手機裡 | ⏳ | 逐字稿、保命三招、排練紀錄表在 [`DEMO.md`](DEMO.md)。**模擬排練**（無頭 Chromium 照逐字稿操作，AI 內容為預熱示意）：前兩次快轉計時各 19.7 s、19.6 s；第三次照正常停留 78.3 s（問題 9.0、核心迴路 29.1、兩個亮點 26.3、收尾 13.8），逐格截圖合成 79 秒直式 mp4（1170×1992，含字幕）交給管理員放手機相簿。真人排練三次與影片放進手機由管理員確認後改 ✅。 |
 | 3 | Demo 用的單字已快取預熱，斷網也能完整演示 | ⏳ | 預熱清單（algorithm、recursion、vocabulary、memorize）與步驟在 `DEMO.md` 保命三招①②。本環境已驗證快取命中離線秒回（Lab 9 驗收 O3）；真機預熱由管理員做。 |
 | 4 | 畢業挑戰的 PR 已合併、已上線、自評尺規四個面向都誠實打過分 | ⏳ | PR [#32](https://github.com/ytp26h2/ytp26h2-labs/pull/32) 已合併（main `3d9f2c7`）；自評與反思寫在 issue [#30](https://github.com/ytp26h2/ytp26h2-labs/issues/30) 結案留言。「已上線」與手機實測待管理員回報後改 ✅。 |
 | 5 | 回頭看 Lab 1 的第一個 commit——你能說出這一路每個 tag 各代表什麼 | ✅ | 見下方「tag 回顧」。 |
