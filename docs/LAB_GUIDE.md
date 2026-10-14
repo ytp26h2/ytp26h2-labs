@@ -33,8 +33,8 @@
 | 1 | [Lab 1：第一次提交](../labs/lab01-first-commit/) | 一・GitHub | 可翻面單字卡 `index.html`，init→add→commit→push，補 README 與 .gitignore | 40–60 分 | `lab1-done` | ✅ 完成（2026-10-13） |
 | 2 | [Lab 2：分支、PR 與衝突](../labs/lab02-branch-pr-conflict/) | 一・GitHub | issue→分支→PR→review→合併；「考我」按鈕；自導自演解一次衝突 | 60–90 分 | `lab2-done` | ✅ 完成（2026-10-13） |
 | 3 | [Lab 3：例句生成 CLI](../labs/lab03-example-cli/) | 二・AI 與 LLM | Python 呼叫 Claude API，單字→例句＋翻譯＋聯想；v2 加 JSON、驗證、降階 | 60–90 分 | `lab3-done` | ✅ 完成（2026-10-13 真實呼叫補驗） |
-| 4 | Lab 4：本地模型與切換（選修） | 附錄 E | Ollama 跑 Qwen；CLI 改「雲端優先、本地備援、罐頭墊底」 | 60–90 分 | `lab4-done` | 待做（選修） |
-| 5 | Sprint 1（Lab 5）：MVP 今日複習佇列 | 三・開發實戰 | 核心迴路 看卡→回想→翻面→自評→下一張；localStorage 紀錄 | 1 Sprint | `sprint1-done` | 待做 |
+| 4 | Lab 4：本地模型與切換（選修） | 附錄 E | Ollama 跑 Qwen；CLI 改「雲端優先、本地備援、罐頭墊底」 | 60–90 分 | `lab4-done` | ⏸ 暫緩（選修；雲端環境裝不了 Ollama，主辦決定跳過） |
+| 5 | [Sprint 1（Lab 5）：MVP 今日複習佇列](../labs/lab05-sprint1-mvp-review-queue/) | 三・開發實戰 | 核心迴路 看卡→回想→翻面→自評→下一張；localStorage 紀錄 | 1 Sprint | `sprint1-done` | ✅ 完成（2026-10-14） |
 | 6 | Sprint 2（Lab 6）：AI 例句上卡片 | 三・開發實戰 | fetch 直呼 API、Structured Output、BYOK＋快取 | 1 Sprint | `sprint2-done` | 待做 |
 | 7 | Sprint 3（Lab 7）：SRS 排程演算法 | 三・開發實戰 | 遺忘曲線、Leitner 盒、`srs.js` 純函式＋單元測試、時間旅行 | 1 Sprint | `sprint3-done` | 待做 |
 | 8 | Sprint 4（Lab 8）：智慧出題與共編 | 三・開發實戰 | 弱點分析、RAG-lite 出題、`words.js`／`check_words.js` 單字包 PR 共編 | 1 Sprint | `sprint4-done` | 待做 |
@@ -76,3 +76,17 @@
 - 真實呼叫才發現：教材 v1 原碼在新模型上**兩關都過不了**，先是 `content[0].text` 噴 `AttributeError`（E-009），修好後 `max_tokens=300` 又被 thinking 吃光、輸出空白（E-011）。
 - 勘誤：E-007～E-011（見 `ERRATA.md`）。E-009、E-011 影響最大：學生照抄教材 v1 第一步就卡住。
 - 檢查點：`lab3-done` 由管理員以 Release 建立；PR #9 合併後依 issue [#10](https://github.com/ytp26h2/ytp26h2-labs/issues/10) 在 GitHub 網頁刪除重建，現指向 PR #9 的合併 commit `64c4601`，涵蓋補驗內容。
+
+### Lab 4：本地模型與切換（選修）⏸
+
+- 2026-10-14 主辦決定暫緩：雲端執行環境無法安裝 Ollama（ollama.com、Hugging Face 等被網路政策擋住）。教材 Lab 4 與附錄 E 本次沒有實作，也沒有勘誤證據。
+
+### Lab 5（Sprint 1）：MVP 今日複習佇列 ✅
+
+- 產出：`labs/lab05-sprint1-mvp-review-queue/`（`index.html`、`README.md`、`.gitignore`、`CHECKLIST.md`）
+- GitHub 紀錄：issue [#12](https://github.com/ytp26h2/ytp26h2-labs/issues/12) → PR（分支 `lab05/feature/review-queue`，從 `main` 開；兩個 commit：chore 起點、feat MVP）
+- 教材來源：教材網站被環境網路政策擋住，改讀 GitHub 上公開的教材原始檔（`tw-ytp/vocabuddy` 的 `index.html`，單一自包含 HTML）。
+- 已驗證：無頭 Chromium 桌機與 iPhone 13 模擬各跑完整佇列；忘了的卡排隊尾再出現；重新整理後 `log` 仍在；無 JS 錯誤。教材程式一字未改。
+- 適配：h1 依教材回到「YTP VocaBuddy」；手機實測以裝置模擬代替；tag 由管理員以 Release 建立。
+- 勘誤：E-012（完成時 `#stats` 未更新）、E-013（重新整理重置佇列未說明）、E-006 範圍擴大（Sprint 1 `closes #4` 寫死）。見 `ERRATA.md`。
+- 檢查點：`sprint1-done` 由管理員在 PR 合併後以 Target=`main` 建立 Release。

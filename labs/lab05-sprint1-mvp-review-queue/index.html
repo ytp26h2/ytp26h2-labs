@@ -1,0 +1,104 @@
+<!--
+  PLAN｜Lab 5（Sprint 1）：MVP——今日複習佇列
+  教材：https://tw-ytp.github.io/vocabuddy/#/3-1（v2.0，2026-09-08）
+  確認日期：2026-10-14（由 YTP 主辦確認後執行）
+  起點：Lab 2 成果複製到 labs/lab05-sprint1-mvp-review-queue/
+
+   1. 建立本資料夾：複製 Lab 2 的 index.html 與 .gitignore，頂端放本 PLAN 註解。
+   2. 開 issue「Sprint 1：今日複習佇列（MVP）」→ #12，內文為使用者故事＋驗收前三條。
+   3. 從 main 開分支 lab05/feature/review-queue。
+   4. 以教材 Sprint 1 的完整 index.html 取代本檔（WORDS 升級為物件、log 存 localStorage、
+      queue 今日全複習、忘了的排隊尾）。commit「lab05: feat: 今日複習佇列 MVP，closes #12」。
+   5. 驗收：無頭 Chromium 跑完整 8 張佇列、忘了的卡再出現、重新整理後 log 仍在、
+      iPhone 尺寸視窗模擬手機操作。結果記入 CHECKLIST.md。
+   6. PR → main，三段描述；在 queue／log 分工處留自我 review 行內評論；由管理員合併。
+   7. 文件：README、CHECKLIST.md、docs/LAB_GUIDE.md、根目錄 README。
+   8. 檢查點 sprint1-done 由管理員以 Release 建立。
+  適配：h1 依教材回到「YTP VocaBuddy」（Lab 2 的 Pro 2.0 為衝突演練產物）；手機實測以裝置模擬代替。
+  勘誤候選：答完最後一張時 #stats 未更新（清空時未呼叫 stats()）；
+           重新整理會重置今日佇列，教材未說明；收工儀式 closes #4 寫死編號（E-006 同類）。
+-->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YTP VocaBuddy</title>
+<style>
+  body{font-family:system-ui,sans-serif;background:#f4f6f5;margin:0;padding:24px;text-align:center}
+  h1{color:#0f766e}
+  #stats{color:#666;font-size:.95rem}
+  #card{max-width:340px;margin:24px auto 8px;padding:36px 24px;background:#fff;border-radius:14px;
+        box-shadow:0 4px 16px rgba(0,0,0,.08);font-size:2rem;user-select:none}
+  #meaning{color:#0f766e;font-size:1.2rem;min-height:1.6em}
+  button{margin:8px 6px 0;padding:10px 22px;font-size:1rem;border:none;border-radius:8px;
+         background:#0f766e;color:#fff;cursor:pointer}
+  button.warn{background:#b3403a}
+</style>
+</head>
+<body>
+<h1>YTP VocaBuddy</h1>
+<p id="stats"></p>
+<div id="card">—</div>
+<p id="meaning">&nbsp;</p>
+<div>
+  <button id="reveal" onclick="reveal()">顯示答案</button>
+  <button id="ok" onclick="mark(true)" hidden>記得 ✓</button>
+  <button id="no" onclick="mark(false)" class="warn" hidden>忘了 ✗</button>
+</div>
+<script>
+const WORDS = [
+  {en:"algorithm", zh:"演算法"},   {en:"recursion", zh:"遞迴"},
+  {en:"vocabulary", zh:"字彙"},    {en:"memorize", zh:"背誦"},
+  {en:"efficient", zh:"有效率的"}, {en:"persist", zh:"堅持；持續"},
+  {en:"retrieve", zh:"取回；檢索"},{en:"interval", zh:"間隔"}
+];
+
+// 學習紀錄：只屬於這台裝置，所以放 localStorage（讀寫都包 try/catch）
+let log = {};
+try { log = JSON.parse(localStorage.getItem("vb-log")) || {}; } catch(e){}
+function save(){ try { localStorage.setItem("vb-log", JSON.stringify(log)); } catch(e){} }
+
+let queue = [...WORDS];   // Sprint 1：每天全部複習。Sprint 3 會換成 SRS 排程
+let cur = null;
+
+const $ = id => document.getElementById(id);
+
+function next(){
+  if (queue.length === 0){
+    $("card").textContent = "今日完成！";
+    $("meaning").innerHTML = "&nbsp;";
+    $("reveal").hidden = $("ok").hidden = $("no").hidden = true;
+    return;
+  }
+  cur = queue[0];
+  $("card").textContent = cur.en;
+  $("meaning").innerHTML = "&nbsp;";
+  $("reveal").hidden = false;
+  $("ok").hidden = $("no").hidden = true;
+  stats();
+}
+
+function reveal(){
+  $("meaning").textContent = cur.zh;
+  $("reveal").hidden = true;
+  $("ok").hidden = $("no").hidden = false;
+}
+
+function mark(ok){
+  const s = log[cur.en] || (log[cur.en] = {seen:0, wrong:0});
+  s.seen++; if (!ok) s.wrong++;
+  save();
+  if (ok) queue.shift();
+  else queue.push(queue.shift());   // 忘了的排到今天隊尾，等一下再考一次
+  next();
+}
+
+function stats(){
+  $("stats").textContent = "今日佇列：剩 " + queue.length + " 張";
+}
+
+next();
+</script>
+</body>
+</html>
