@@ -1,0 +1,189 @@
+<!--
+  PLAN｜Lab 8（Sprint 4）：智慧出題與多人共編
+  教材：https://tw-ytp.github.io/vocabuddy/#/3-4（v2.0，2026-09-08）
+  確認日期：2026-10-14（由 YTP 主辦確認後執行；模型指定 claude-sonnet-5-5）
+  起點：Lab 7 成果複製到 labs/lab08-sprint4-smart-quiz/
+
+   1. 建立本資料夾：複製 Lab 7 的 index.html、srs.js、test_srs.js、.gitignore，頂端放本 PLAN 註解。
+   2. 開 issue「Sprint 4：智慧出題＋單字包共編」→ #21。
+   3. 從 main 開分支 lab08/feature/smart-quiz。
+   4. 照教材：WORDS 搬進 words.js（Node／瀏覽器兩用）、check_words.js 檢查欄位與重複、
+      weakest(k) 弱點檢索、常駐「考我弱點」鈕與 #quiz、smartQuiz() 出四選一克漏字並驗證格式、
+      答題寫回 log。callClaude(system, user) 教材未給程式：把 Lab 6 的 fetch 原樣抽出
+      （含 E-007／E-009／E-011／E-014 四處修改），aiExample() 改呼叫它。
+      commit「lab08: feat: 弱點出題與單字包共編，closes #21」。
+   5. 驗收四層：node check_words.js（含塞重複字、缺欄位確認會報錯）；無頭 Chromium 攔截 API
+      （弱字排序與 prompt、合法題目顯示與答題寫回、三種不合格格式不出題、斷網）；curl 重放頁面
+      送出的出題請求到真實 API、Chromium 經代理端到端；Lab 6、Lab 7 腳本回歸。
+   6. PR → main，三段描述；在 smartQuiz() 驗證那行留自我 review；由管理員合併。
+   7. 多人共編：第一個 PR 合併後，從 main 開 lab08/feature/words-animals 加 8–10 個動物單字，
+      開第二個 PR；換 reviewer 帽子跑 check_words.js、抽查翻譯、留 review；由管理員合併。
+   8. 文件：README、CHECKLIST.md、docs/LAB_GUIDE.md、根目錄 README、ERRATA（E-020～E-022）。
+   9. 檢查點 sprint4-done 由管理員在第二個 PR 合併後以 Release 建立；確認四個 sprint tag 齊全。
+  適配：「兩頂帽子」由同一位作者扮演作者與 reviewer，合併仍由管理員；相鄰行衝突演練不做（Lab 2 已練）。
+  勘誤候選：smartQuiz() 以 innerHTML 插入 q.question／q.why（E-015 同類）；log[q.answer] 以模型回的字串
+           當鍵，大小寫或非單字包的字會產生垃圾鍵、錯誤率寫不到本尊；callClaude 教材缺程式；
+           收工 closes #7 寫死（E-006）；E-012 本輪仍未修。
+-->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YTP VocaBuddy</title>
+<style>
+  body{font-family:system-ui,sans-serif;background:#f4f6f5;margin:0;padding:24px;text-align:center}
+  h1{color:#0f766e}
+  #stats{color:#666;font-size:.95rem}
+  #card{max-width:340px;margin:24px auto 8px;padding:36px 24px;background:#fff;border-radius:14px;
+        box-shadow:0 4px 16px rgba(0,0,0,.08);font-size:2rem;user-select:none}
+  #meaning{color:#0f766e;font-size:1.2rem;min-height:1.6em}
+  button{margin:8px 6px 0;padding:10px 22px;font-size:1rem;border:none;border-radius:8px;
+         background:#0f766e;color:#fff;cursor:pointer}
+  button.warn{background:#b3403a}
+</style>
+</head>
+<body>
+<h1>YTP VocaBuddy</h1>
+<p id="stats"></p>
+<div id="card">—</div>
+<p id="meaning">&nbsp;</p>
+<p id="ai" style="max-width:340px;margin:8px auto;color:#555"></p>
+<div>
+  <button id="reveal" onclick="reveal()">顯示答案</button>
+  <button id="ok" onclick="mark(true)" hidden>記得 ✓</button>
+  <button id="no" onclick="mark(false)" class="warn" hidden>忘了 ✗</button>
+  <button id="aiBtn" onclick="aiExample()" hidden>AI 例句</button>
+</div>
+<script src="srs.js"></script>
+<script>
+const WORDS = [
+  {en:"algorithm", zh:"演算法"},   {en:"recursion", zh:"遞迴"},
+  {en:"vocabulary", zh:"字彙"},    {en:"memorize", zh:"背誦"},
+  {en:"efficient", zh:"有效率的"}, {en:"persist", zh:"堅持；持續"},
+  {en:"retrieve", zh:"取回；檢索"},{en:"interval", zh:"間隔"}
+];
+
+// 學習紀錄：只屬於這台裝置，所以放 localStorage（讀寫都包 try/catch）
+let log = {};
+try { log = JSON.parse(localStorage.getItem("vb-log")) || {}; } catch(e){}
+function save(){ try { localStorage.setItem("vb-log", JSON.stringify(log)); } catch(e){} }
+
+// —— 日期：以「第幾天」為單位，附時間旅行測試器 ——
+let dayOffset = 0;
+try { dayOffset = +localStorage.getItem("vb-day") || 0; } catch(e){}
+const today = () => Math.floor(Date.now() / 864e5) + dayOffset;
+window.vbTravel = n => {            // Console 輸入 vbTravel(1) 即快轉一天
+  try { localStorage.setItem("vb-day", dayOffset + n); } catch(e){}
+  location.reload();
+};
+
+function stateOf(w){
+  const s = log[w.en] || (log[w.en] = { seen:0, wrong:0 });
+  if (s.box === undefined){ s.box = 1; s.due = today(); }   // 舊紀錄自動升級
+  return s;
+}
+
+let queue = WORDS.filter(w => stateOf(w).due <= today());   // 只複習「到期」的卡
+let cur = null;
+
+const $ = id => document.getElementById(id);
+
+function next(){
+  $("aiBtn").hidden = true;          // Sprint 2：換卡時藏回 AI 鈕、清空例句
+  $("ai").textContent = "";
+  if (queue.length === 0){
+    $("card").textContent = "今天沒有到期的卡——明天見！";
+    $("meaning").innerHTML = "&nbsp;";
+    $("reveal").hidden = $("ok").hidden = $("no").hidden = true;
+    return;
+  }
+  cur = queue[0];
+  $("card").textContent = cur.en;
+  $("meaning").innerHTML = "&nbsp;";
+  $("reveal").hidden = false;
+  $("ok").hidden = $("no").hidden = true;
+  stats();
+}
+
+function reveal(){
+  $("meaning").textContent = cur.zh;
+  $("reveal").hidden = true;
+  $("ok").hidden = $("no").hidden = false;
+  $("aiBtn").hidden = false;         // Sprint 2：翻面後才給 AI 例句
+}
+
+function mark(ok){
+  const s = stateOf(cur);
+  s.seen++; if (!ok) s.wrong++;
+  const r = schedule(s.box, ok, today());   // ← 排程交給純函式
+  s.box = r.box; s.due = r.due;
+  save();
+  if (ok) queue.shift();
+  else queue.push(queue.shift());   // 忘了的排到今天隊尾，等一下再考一次
+  next();
+}
+
+function stats(){
+  $("stats").textContent = "今日佇列：剩 " + queue.length + " 張";
+}
+
+// ---------- Sprint 2：AI 例句（fetch 直呼 API、使用者自帶金鑰、快取、降階） ----------
+const MODEL = "claude-sonnet-5-5";   // 教材 claude-sonnet-4-5 已非當前世代（勘誤 E-007）；最新名稱見附錄 B
+const API_VERSION = "2023-06-01";    // anthropic-version 標頭值，見附錄 B
+
+function getKey(){
+  let k = null;
+  try { k = localStorage.getItem("vb-key"); } catch(e){}
+  if (!k){
+    k = prompt("貼上你的 API key（只存在你自己的瀏覽器）");
+    try { localStorage.setItem("vb-key", k); } catch(e){}
+  }
+  return k;
+}
+
+// 回應的 content 是「區塊列表」，新模型可能先回 thinking 區塊，依 type 只挑 text（勘誤 E-009）
+const textOf = data => data.content.filter(b => b.type === "text").map(b => b.text).join("");
+
+async function aiExample(){
+  const word = cur.en, box = $("ai");
+  let cache = {};
+  try { cache = JSON.parse(localStorage.getItem("vb-ai")) || {}; } catch(e){}
+  if (cache[word]) return show(cache[word]);        // 快取命中：不花錢、離線可用
+  box.textContent = "生成中…";
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": getKey(),
+        "anthropic-version": API_VERSION,
+        "anthropic-dangerous-direct-browser-access": "true"  // 瀏覽器直呼必加，見附錄 B
+      },
+      body: JSON.stringify({
+        model: MODEL, max_tokens: 1024,   // 教材 300；thinking 的 token 也算在內（勘誤 E-011）
+        // 教材有 temperature: 0.3；claude-sonnet-5-5 不接受 temperature，會回 400（勘誤 E-014）
+        system: '你是高中英語老師。只輸出 JSON：{"sentence":"...","zh":"...","tip":"..."}，不要 markdown 圍欄',
+        messages: [{ role: "user",
+                     content: "用單字 " + word + " 造一個 CEFR B1 例句、中譯與聯想" }]
+      })
+    });
+    const data = await res.json();
+    const c = JSON.parse(textOf(data));            // 教材：data.content[0].text（勘誤 E-009）
+    if (!c.sentence.toLowerCase().includes(word.toLowerCase()))
+      throw new Error("例句沒包含目標單字");
+    cache[word] = c;
+    try { localStorage.setItem("vb-ai", JSON.stringify(cache)); } catch(e){}
+    show(c);
+  } catch (e) {
+    box.textContent = "AI 暫時不可用——不影響複習，例句之後再補。";
+  }
+  function show(c){
+    box.innerHTML = "<em>" + c.sentence + "</em><br>" + c.zh + "<br>聯想：" + c.tip;
+  }
+}
+
+next();
+</script>
+</body>
+</html>
