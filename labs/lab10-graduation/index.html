@@ -110,7 +110,19 @@ function loadCustom(){
 function saveCustom(list){ try { localStorage.setItem("vb-words", JSON.stringify(list)); } catch(e){} }
 WORDS.push(...loadCustom());          // WORDS 是 const 陣列，可以 push，不能重新指定
 
+// 用途：Fisher-Yates 洗牌，回傳打亂順序的新陣列（不改動原陣列）
+// （Lab 12 對照實驗產物：全新 session 讀了 CLAUDE.md 後自動寫出「用途：」註解；程式照它的草稿貼入）
+function shuffleWords(list){
+  const a = list.slice();
+  for (let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 let queue = WORDS.filter(w => stateOf(w).due <= today());   // 只複習「到期」的卡
+window.vbShuffle = () => { queue = shuffleWords(queue); next(); };   // Console 輸入 vbShuffle() 打亂今日佇列（預設順序不變）
 let cur = null;
 
 const $ = id => document.getElementById(id);
