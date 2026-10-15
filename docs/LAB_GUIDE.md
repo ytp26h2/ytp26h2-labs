@@ -2,7 +2,7 @@
 
 本文件是 `ytp26h2-labs` 的總指引：教材有哪些 Lab、本 repo 怎麼對應、每個 Lab 的狀態與入口。每做完一個 Lab 就更新一次。
 
-- 教材：YTP VocaBuddy 開發者之路 v2.0 <https://tw-ytp.github.io/vocabuddy/>（原始檔 <https://github.com/tw-ytp/vocabuddy>）
+- 教材：YTP VocaBuddy 開發者之路 v2.3（2026-10-15；本倉庫各 Lab 依 v2.0 實作，32 條勘誤已於 v2.1／v2.2 修正，見 `ERRATA.md`）<https://tw-ytp.github.io/vocabuddy/>（原始檔 <https://github.com/tw-ytp/vocabuddy>）
 - 勘誤表：[`ERRATA.md`](ERRATA.md)
 - 實作方式：全程透過 Claude 在瀏覽器中完成，程式碼與文件直接進 GitHub，不落地，便於多位作者或多個 Agent 並行協作。
 

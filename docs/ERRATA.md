@@ -1,6 +1,6 @@
 # 勘誤表（Errata）
 
-對象：YTP VocaBuddy 開發者之路 教材 v2.0（2026-09-08）<https://tw-ytp.github.io/vocabuddy/>
+對象：YTP VocaBuddy 開發者之路 教材 v2.0（2026-09-08；本表各條均以 v2.0 原文記錄）<https://tw-ytp.github.io/vocabuddy/>。現行教材版本 **v2.3**（2026-10-15，含 v2.1／v2.2 勘誤修訂與新增附錄 F）。
 用途：實作各 Lab 時發現的錯誤或不周全之處，先記在此，彙整後再向教材倉庫 <https://github.com/tw-ytp/vocabuddy/issues> 回報。
 回報格式依教材 README：哪一節／哪個 Lab、看到什麼、預期看到什麼。
 
